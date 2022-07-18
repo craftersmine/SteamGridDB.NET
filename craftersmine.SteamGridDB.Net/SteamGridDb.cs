@@ -48,9 +48,39 @@ namespace craftersmine.SteamGridDBNet
             return response.Data!.ToObject<SteamGridDbGame>();
         }
 
-        public async Task<SteamGridDbGrid?> GetGridByGameIdAsync(int gameId)
+        public async Task<SteamGridDbGrid[]?> GetGridsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false, 
+            SteamGridDbStyles styles = SteamGridDbStyles.AllGrids, SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids, 
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbGridTypes types = SteamGridDbGridTypes.All)
         {
-            return null;
+            if (styles.HasFlag(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
+                styles &= ~(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
+
+            if (dimensions.HasFlag(SteamGridDbDimensions.AllHeroes)) dimensions &= ~(SteamGridDbDimensions.AllHeroes);
+            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
+            var dimensionsFilter = SteamGridDbConstants.Dimensions.GetFromFlags(dimensions);
+            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
+            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
+            var response = await Get($"grids/game/{gameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
+            return response.Data!.ToObject<SteamGridDbGrid[]>();
+        }
+
+        public async Task<SteamGridDbGrid[]?> GetGridsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId,
+            bool nsfw = false, bool humorous = false, SteamGridDbStyles styles = SteamGridDbStyles.AllGrids,
+            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids,
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbGridTypes types = SteamGridDbGridTypes.All)
+        {
+            if (styles.HasFlag(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
+                styles &= ~(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
+
+            if (dimensions.HasFlag(SteamGridDbDimensions.AllHeroes)) dimensions &= ~(SteamGridDbDimensions.AllHeroes);
+            var platforms = SteamGridDbConstants.Platforms.GetFromFlags(platform);
+            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
+            var dimensionsFilter = SteamGridDbConstants.Dimensions.GetFromFlags(dimensions);
+            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
+            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
+            var response = await Get($"grids/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
+            return response.Data!.ToObject<SteamGridDbGrid[]>();
+        }
         }
 
         private async Task<SteamGridDbResponse> Get(string uri)
