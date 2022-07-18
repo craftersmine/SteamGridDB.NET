@@ -140,6 +140,43 @@ namespace craftersmine.SteamGridDBNet
         {
             return await DeleteGridsAsync(gridId);
         }
+
+        public async Task<SteamGridDbHero[]?> GetHeroesByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
+            SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
+            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbGridTypes types = SteamGridDbGridTypes.All)
+        {
+            if (styles.HasFlag(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
+                styles &= ~(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
+            if (dimensions.HasFlag(SteamGridDbDimensions.AllGrids))
+                dimensions &= ~(SteamGridDbDimensions.AllGrids);
+            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
+            var dimensionsFilter = SteamGridDbConstants.Dimensions.GetFromFlags(dimensions);
+            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
+            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
+            var response =
+                await Get(
+                    $"heroes/game/{gameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
+            return response.Data!.ToObject<SteamGridDbHero[]>();
+        }
+
+        public async Task<SteamGridDbHero[]?> GetHeroesByPlatformGameIdAsync(SteamGridDbGamePlatform platform,
+            int platformGameId,
+            bool nsfw = false, bool humorous = false, SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
+            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbGridTypes types = SteamGridDbGridTypes.All)
+        {
+            if (styles.HasFlag(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
+                styles &= ~(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
+            if (dimensions.HasFlag(SteamGridDbDimensions.AllGrids))
+                dimensions &= ~(SteamGridDbDimensions.AllGrids);
+            var platforms = SteamGridDbConstants.Platforms.GetFromFlags(platform);
+            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
+            var dimensionsFilter = SteamGridDbConstants.Dimensions.GetFromFlags(dimensions);
+            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
+            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
+            var response = await Get($"heroes/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
+            return response.Data!.ToObject<SteamGridDbHero[]>();
         }
 
         private async Task<SteamGridDbResponse> Get(string uri)
