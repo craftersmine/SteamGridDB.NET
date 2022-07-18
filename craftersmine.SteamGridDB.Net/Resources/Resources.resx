@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Exception.BadRequest" xml:space="preserve">
-    <value>Bad request to SteamGridDB.</value>
+    <value>Bad request to SteamGridDB. Invalid ID, asset, parameter, etc.</value>
   </data>
   <data name="Exception.ExpectedDateTimeObject" xml:space="preserve">
     <value>Expected date time object value.</value>
@@ -127,16 +127,25 @@
     <value>Expected integer token type in JSON.</value>
   </data>
   <data name="Exception.Forbidden" xml:space="preserve">
-    <value>Request to SteamGridDB forbidden.</value>
+    <value>Request to SteamGridDB forbidden. Probably because you don't own item action on which you want to perform.</value>
+  </data>
+  <data name="Exception.ImageStreamIsEmpty" xml:space="preserve">
+    <value>Image stream appears to be empty.</value>
   </data>
   <data name="Exception.InvalidDateTime" xml:space="preserve">
-    <value>Unix epoc starts January 1st, 1970</value>
+    <value>Unix epoc starts January 1st, 1970.</value>
+  </data>
+  <data name="Exception.InvalidMimeType" xml:space="preserve">
+    <value>Invalid file MIME type. Supported MIME types are "image/png" and "image/jpeg".</value>
+  </data>
+  <data name="Exception.MoreThanOneStyleSelected" xml:space="preserve">
+    <value>Only one style supported to select for uploading item.</value>
   </data>
   <data name="Exception.NotFound" xml:space="preserve">
-    <value>Requested resource not found on SteamGridDB.</value>
+    <value>Requested grid/hero/icon/logo/game not found on SteamGridDB.</value>
   </data>
   <data name="Exception.Unauthorized" xml:space="preserve">
-    <value>Unauthorized request to SteamGridDB. Probably due to missing or invalid API key</value>
+    <value>Unauthorized request to SteamGridDB. Probably due to missing or invalid API key.</value>
   </data>
   <data name="Exception.Unknown" xml:space="preserve">
     <value>Unknown Exception occurred.</value>

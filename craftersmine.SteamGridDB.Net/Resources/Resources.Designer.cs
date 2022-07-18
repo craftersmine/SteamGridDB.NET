@@ -61,7 +61,7 @@ namespace craftersmine.SteamGridDBNet.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Bad request to SteamGridDB..
+        ///   Ищет локализованную строку, похожую на Bad request to SteamGridDB. Invalid ID, asset, parameter, etc..
         /// </summary>
         internal static string Exception_BadRequest {
             get {
@@ -88,7 +88,7 @@ namespace craftersmine.SteamGridDBNet.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Request to SteamGridDB forbidden..
+        ///   Ищет локализованную строку, похожую на Request to SteamGridDB forbidden. Probably because you don&apos;t own item action on which you want to perform..
         /// </summary>
         internal static string Exception_Forbidden {
             get {
@@ -97,7 +97,16 @@ namespace craftersmine.SteamGridDBNet.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Unix epoc starts January 1st, 1970.
+        ///   Ищет локализованную строку, похожую на Image stream appears to be empty..
+        /// </summary>
+        internal static string Exception_ImageStreamIsEmpty {
+            get {
+                return ResourceManager.GetString("Exception.ImageStreamIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unix epoc starts January 1st, 1970..
         /// </summary>
         internal static string Exception_InvalidDateTime {
             get {
@@ -106,7 +115,25 @@ namespace craftersmine.SteamGridDBNet.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Requested resource not found on SteamGridDB..
+        ///   Ищет локализованную строку, похожую на Invalid file MIME type. Supported MIME types are &quot;image/png&quot; and &quot;image/jpeg&quot;..
+        /// </summary>
+        internal static string Exception_InvalidMimeType {
+            get {
+                return ResourceManager.GetString("Exception.InvalidMimeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Only one style supported to select for uploading item..
+        /// </summary>
+        internal static string Exception_MoreThanOneStyleSelected {
+            get {
+                return ResourceManager.GetString("Exception.MoreThanOneStyleSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Requested grid/hero/icon/logo/game not found on SteamGridDB..
         /// </summary>
         internal static string Exception_NotFound {
             get {
@@ -115,7 +142,7 @@ namespace craftersmine.SteamGridDBNet.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Unauthorized request to SteamGridDB. Probably due to missing or invalid API key.
+        ///   Ищет локализованную строку, похожую на Unauthorized request to SteamGridDB. Probably due to missing or invalid API key..
         /// </summary>
         internal static string Exception_Unauthorized {
             get {
