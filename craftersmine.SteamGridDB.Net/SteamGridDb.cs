@@ -128,6 +128,18 @@ namespace craftersmine.SteamGridDBNet
                 return await UploadGridAsync(gameId, file);
             }
         }
+
+        public async Task<bool> DeleteGridsAsync(params int[] gridIds)
+        {
+            string ids = string.Join(",", gridIds);
+            var response = await Delete("grids/" + ids);
+            return response.Success;
+        }
+
+        public async Task<bool> DeleteGridAsync(int gridId)
+        {
+            return await DeleteGridsAsync(gridId);
+        }
         }
 
         private async Task<SteamGridDbResponse> Get(string uri)
