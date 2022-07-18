@@ -81,6 +81,53 @@ namespace craftersmine.SteamGridDBNet
             var response = await Get($"grids/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
             return response.Data!.ToObject<SteamGridDbGrid[]>();
         }
+
+        public async Task<bool> UploadGridAsync(int gameId, Stream imageStream, SteamGridDbStyles style = SteamGridDbStyles.Alternate)
+        {
+            if (style.MoreThanOneFlag())
+                throw new ArgumentException(Resources.Resources.Exception_MoreThanOneStyleSelected, nameof(style));
+
+            var styleStr = SteamGridDbConstants.Styles.GetFromFlags(style);
+            MultipartFormDataContent content = new MultipartFormDataContent();
+            content.Add(new StringContent(gameId.ToString()), "game_id");
+            if (style != SteamGridDbStyles.None)
+                content.Add(new StringContent(styleStr), "style");
+            byte[] signature = new byte[32];
+            var read = await imageStream.ReadAsync(signature, 0, 32);
+            if (read == 0)
+                throw new ArgumentOutOfRangeException(Resources.Resources.Exception_ImageStreamIsEmpty);
+            imageStream.Position = 0;
+            string mimeType = "";
+            string ext = "";
+            if (MimeHelper.ValidateMimeType(signature, SteamGridDbConstants.Mimes.Jpeg))
+            {
+                ext = "jpg";
+                mimeType = SteamGridDbConstants.Mimes.Jpeg;
+            }
+
+            if (MimeHelper.ValidateMimeType(signature, SteamGridDbConstants.Mimes.Png))
+            {
+                ext = "png";
+                mimeType = SteamGridDbConstants.Mimes.Png;
+            }
+            if (string.IsNullOrWhiteSpace(mimeType))
+                throw new InvalidMimeTypeException(Resources.Resources.Exception_InvalidMimeType);
+            
+            var streamContent = new StreamContent(imageStream);
+            streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(mimeType);
+            content.Add(streamContent , "asset", "image." + ext);
+            var response = await Post("grids", content);
+            return response.Success;
+        }
+
+        public async Task<bool> UploadGridFromFileAsync(int gameId, string filePath,
+            SteamGridDbStyles style = SteamGridDbStyles.Alternate)
+        {
+            using (FileStream file = File.OpenRead(filePath))
+            {
+                return await UploadGridAsync(gameId, file);
+            }
+        }
         }
 
         private async Task<SteamGridDbResponse> Get(string uri)
