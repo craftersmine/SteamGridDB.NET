@@ -208,6 +208,62 @@ namespace craftersmine.SteamGridDBNet
             throw new SteamGridDbException(Resources.Resources.Exception_Unknown);
         }
 
+        private async Task<SteamGridDbResponse> Post(string uri, MultipartFormDataContent content)
+        {
+            var response = await _httpClient.PostAsync(uri, content);
+            var str = await response.Content.ReadAsStringAsync();
+            var respObj = JsonConvert.DeserializeObject<SteamGridDbResponse>(str);
+
+            if (respObj!.Success)
+                return respObj;
+
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    throw new SteamGridDbBadRequestException(Resources.Resources.Exception_BadRequest)
+                        { ExceptionType = ExceptionType.BadRequest, SteamGridDbErrorMessages = respObj.Errors };
+                case HttpStatusCode.Forbidden:
+                    throw new SteamGridDbForbiddenException(Resources.Resources.Exception_Forbidden)
+                        { ExceptionType = ExceptionType.Forbidden, SteamGridDbErrorMessages = respObj.Errors };
+                case HttpStatusCode.NotFound:
+                    throw new SteamGridDbNotFoundException(Resources.Resources.Exception_NotFound)
+                        { ExceptionType = ExceptionType.NotFound, SteamGridDbErrorMessages = respObj.Errors };
+                case HttpStatusCode.Unauthorized:
+                    throw new SteamGridDbUnauthorizedException(Resources.Resources.Exception_Unauthorized)
+                        { ExceptionType = ExceptionType.Unauthorized, SteamGridDbErrorMessages = respObj.Errors };
+            }
+
+            throw new SteamGridDbException(Resources.Resources.Exception_Unknown);
+        }
+
+        private async Task<SteamGridDbResponse> Delete(string uri)
+        {
+            var response = await _httpClient.DeleteAsync(uri);
+            var str = await response.Content.ReadAsStringAsync();
+            var respObj = JsonConvert.DeserializeObject<SteamGridDbResponse>(str);
+
+            if (respObj!.Success)
+                return respObj;
+
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    throw new SteamGridDbBadRequestException(Resources.Resources.Exception_BadRequest)
+                        { ExceptionType = ExceptionType.BadRequest, SteamGridDbErrorMessages = respObj.Errors };
+                case HttpStatusCode.Forbidden:
+                    throw new SteamGridDbForbiddenException(Resources.Resources.Exception_Forbidden)
+                        { ExceptionType = ExceptionType.Forbidden, SteamGridDbErrorMessages = respObj.Errors };
+                case HttpStatusCode.NotFound:
+                    throw new SteamGridDbNotFoundException(Resources.Resources.Exception_NotFound)
+                        { ExceptionType = ExceptionType.NotFound, SteamGridDbErrorMessages = respObj.Errors };
+                case HttpStatusCode.Unauthorized:
+                    throw new SteamGridDbUnauthorizedException(Resources.Resources.Exception_Unauthorized)
+                        { ExceptionType = ExceptionType.Unauthorized, SteamGridDbErrorMessages = respObj.Errors };
+            }
+
+            throw new SteamGridDbException(Resources.Resources.Exception_Unknown);
+        }
+ 
         private T? DeserializeFromString<T>(string str)
         {
             return JsonConvert.DeserializeObject<T>(str);
