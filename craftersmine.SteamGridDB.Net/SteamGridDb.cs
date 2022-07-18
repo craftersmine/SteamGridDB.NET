@@ -192,13 +192,13 @@ namespace craftersmine.SteamGridDBNet
             switch (response.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
-                    throw new SteamGridDbException(Resources.Resources.Exception_BadRequest)
+                    throw new SteamGridDbBadRequestException(Resources.Resources.Exception_BadRequest)
                         { ExceptionType = ExceptionType.BadRequest, SteamGridDbErrorMessages = respObj.Errors };
                 case HttpStatusCode.Forbidden:
-                    throw new SteamGridDbException(Resources.Resources.Exception_Forbidden)
+                    throw new SteamGridDbForbiddenException(Resources.Resources.Exception_Forbidden)
                         { ExceptionType = ExceptionType.Forbidden, SteamGridDbErrorMessages = respObj.Errors };
                 case HttpStatusCode.NotFound:
-                    throw new SteamGridDbException(Resources.Resources.Exception_NotFound)
+                    throw new SteamGridDbNotFoundException(Resources.Resources.Exception_NotFound)
                         { ExceptionType = ExceptionType.NotFound, SteamGridDbErrorMessages = respObj.Errors };
                 case HttpStatusCode.Unauthorized:
                     throw new SteamGridDbUnauthorizedException(Resources.Resources.Exception_Unauthorized)
