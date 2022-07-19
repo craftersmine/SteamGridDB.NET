@@ -17,6 +17,7 @@
     <RepositoryType>github</RepositoryType>
     <PackageTags>SteamGridDB;api</PackageTags>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
