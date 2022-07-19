@@ -1,5 +1,5 @@
 # SteamGridDB.NET
-<img src="/.github/RepositoryPreview.png" width="50%"/>
+<img src="https://raw.githubusercontent.com/craftersmine/SteamGridDB.NET/master/.github/RepositoryPreview.png" width="50%"/>
 
 Supports:
 * All types of SteamGridDB items (Grids, Heroes, Icons and Logos)
