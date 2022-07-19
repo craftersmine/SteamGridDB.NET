@@ -16,7 +16,6 @@
     <PackageProjectUrl>https://github.com/craftersmine/SteamGridDB.NET</PackageProjectUrl>
     <RepositoryType>github</RepositoryType>
     <PackageTags>SteamGridDB;api</PackageTags>
-    <PackageLicenseFile>C:\Users\rodio\Desktop\Dev\craftersmine.SteamGridDB.NET\LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
