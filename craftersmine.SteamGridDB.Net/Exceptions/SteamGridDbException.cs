@@ -8,10 +8,19 @@ using System.Threading.Tasks;
 
 namespace craftersmine.SteamGridDBNet.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when generic SteamGridDB or library error occurred
+    /// </summary>
     [Serializable]
     public class SteamGridDbException : Exception
     {
+        /// <summary>
+        /// Gets a type of exception occurred
+        /// </summary>
         public ExceptionType ExceptionType { get; set; }
+        /// <summary>
+        /// Gets an array of SteamGridDB API response error messages, when request is not succeeded
+        /// </summary>
         public string[]? SteamGridDbErrorMessages { get; set; }
 
         public SteamGridDbException()
@@ -33,6 +42,9 @@ namespace craftersmine.SteamGridDBNet.Exceptions
         }
     }
 
+    /// <summary>
+    /// Contains types of exceptions
+    /// </summary>
     public enum ExceptionType
     {
         Unauthorized = 401,

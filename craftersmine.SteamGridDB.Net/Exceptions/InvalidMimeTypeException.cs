@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace craftersmine.SteamGridDBNet.Exceptions
 {
+    /// <summary>
+    /// The exception that is thrown when data with invalid or unsupported MIME type is provided
+    /// </summary>
     [Serializable]
     public class InvalidMimeTypeException : Exception
     {

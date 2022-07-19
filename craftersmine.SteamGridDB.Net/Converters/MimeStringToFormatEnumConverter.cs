@@ -24,6 +24,9 @@ namespace craftersmine.SteamGridDBNet.Converters
                     case SteamGridDbFormats.Webp:
                         writer.WriteValue(SteamGridDbConstants.Mimes.Webp);
                         break;
+                    case SteamGridDbFormats.Ico:
+                        writer.WriteValue(SteamGridDbConstants.Mimes.Ico);
+                        break;
                 }
             }
         }
@@ -40,6 +43,8 @@ namespace craftersmine.SteamGridDBNet.Converters
                         return SteamGridDbFormats.Jpeg;
                     case SteamGridDbConstants.Mimes.Webp:
                         return SteamGridDbFormats.Webp;
+                    case SteamGridDbConstants.Mimes.Ico:
+                        return SteamGridDbFormats.Ico;
                 }
             }
             return SteamGridDbFormats.Unknown;

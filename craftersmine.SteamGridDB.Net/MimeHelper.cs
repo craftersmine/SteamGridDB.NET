@@ -11,7 +11,8 @@ namespace craftersmine.SteamGridDBNet
         private static readonly Dictionary<string, byte[]> _mimeTypes = new Dictionary<string, byte[]>
         {
             {"image/jpeg", new byte[] {255, 216, 255}},
-            {"image/png", new byte[] {137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82}}
+            {"image/png", new byte[] {137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82}},
+            {"image/vnd.microsoft.icon",new byte[]{00, 00, 01, 00}}
         };
 
         public static bool ValidateMimeType(byte[] file, string contentType)

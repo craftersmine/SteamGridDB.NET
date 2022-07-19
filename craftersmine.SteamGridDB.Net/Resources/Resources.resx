@@ -136,7 +136,13 @@
     <value>Unix epoc starts January 1st, 1970.</value>
   </data>
   <data name="Exception.InvalidMimeType" xml:space="preserve">
-    <value>Invalid file MIME type. Supported MIME types are "image/png" and "image/jpeg".</value>
+    <value>Invalid file MIME type. Supported MIME types are {0}.</value>
+  </data>
+  <data name="Exception.InvalidStyleSelected" xml:space="preserve">
+    <value>This type of item doesn't support style "{0}"</value>
+  </data>
+  <data name="Exception.MoreThanOnePlatformSelected" xml:space="preserve">
+    <value>Only one selected platform supported</value>
   </data>
   <data name="Exception.MoreThanOneStyleSelected" xml:space="preserve">
     <value>Only one style supported to select for uploading item.</value>

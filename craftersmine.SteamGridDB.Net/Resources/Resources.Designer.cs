@@ -115,11 +115,29 @@ namespace craftersmine.SteamGridDBNet.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Invalid file MIME type. Supported MIME types are &quot;image/png&quot; and &quot;image/jpeg&quot;..
+        ///   Ищет локализованную строку, похожую на Invalid file MIME type. Supported MIME types are {0}..
         /// </summary>
         internal static string Exception_InvalidMimeType {
             get {
                 return ResourceManager.GetString("Exception.InvalidMimeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This type of item doesn&apos;t support style &quot;{0}&quot;.
+        /// </summary>
+        internal static string Exception_InvalidStyleSelected {
+            get {
+                return ResourceManager.GetString("Exception.InvalidStyleSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Only one selected platform supported.
+        /// </summary>
+        internal static string Exception_MoreThanOnePlatformSelected {
+            get {
+                return ResourceManager.GetString("Exception.MoreThanOnePlatformSelected", resourceCulture);
             }
         }
         

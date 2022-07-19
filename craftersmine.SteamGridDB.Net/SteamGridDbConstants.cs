@@ -123,6 +123,7 @@ namespace craftersmine.SteamGridDBNet
             public const string Png = "image/png";
             public const string Jpeg = "image/jpeg";
             public const string Webp = "image/webp";
+            public const string Ico = "image/vnd.microsoft.icon";
 
             public static string GetFromFlags(SteamGridDbFormats formats)
             {
@@ -133,6 +134,8 @@ namespace craftersmine.SteamGridDBNet
                     lst.Add(Jpeg);
                 if (formats.HasFlag(SteamGridDbFormats.Webp))
                     lst.Add(Webp);
+                if (formats.HasFlag(SteamGridDbFormats.Ico))
+                    lst.Add(Ico);
 
                 return string.Join(",", lst);
             }
@@ -143,13 +146,76 @@ namespace craftersmine.SteamGridDBNet
             public const string Static = "static";
             public const string Animated = "animated";
 
-            public static string GetFromFlags(SteamGridDbGridTypes gridTypes)
+            public static string GetFromFlags(SteamGridDbTypes gridTypes)
             {
                 List<string> lst = new List<string>();
-                if (gridTypes.HasFlag(SteamGridDbGridTypes.Static))
+                if (gridTypes.HasFlag(SteamGridDbTypes.Static))
                     lst.Add(Static);
-                if (gridTypes.HasFlag(SteamGridDbGridTypes.Animated))
+                if (gridTypes.HasFlag(SteamGridDbTypes.Animated))
                     lst.Add(Animated);
+
+                return string.Join(",", lst);
+            }
+        }
+
+        public static class IconDimensions
+        {
+            public const string D8 = "8x8";
+            public const string D16 = "16x16";
+            public const string D24 = "24x24";
+            public const string D28 = "28x28";
+            public const string D32 = "32x32";
+            public const string D40 = "40x40";
+            public const string D48 = "48x48";
+            public const string D60 = "60x60";
+            public const string D64 = "64x64";
+            public const string D72 = "72x72";
+            public const string D96 = "96x96";
+            public const string D128 = "128x128";
+            public const string D192 = "192x192";
+            public const string D256 = "256x256";
+            public const string D512 = "512x512";
+            public const string D768 = "768x768";
+            public const string D1024 = "1024x1024";
+
+            public static string GetFromFlags(SteamGridDbIconDimensions dimensions)
+            {
+                List<string> lst = new List<string>();
+
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D8))
+                    lst.Add(D8);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D16))
+                    lst.Add(D16);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D24))
+                    lst.Add(D24);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D28))
+                    lst.Add(D28);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D32))
+                    lst.Add(D32);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D40))
+                    lst.Add(D40);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D48))
+                    lst.Add(D48);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D60))
+                    lst.Add(D60);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D64))
+                    lst.Add(D64);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D72))
+                    lst.Add(D72);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D96))
+                    lst.Add(D96);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D128))
+                    lst.Add(D128);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D192))
+                    lst.Add(D192);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D256))
+                    lst.Add(D256);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D512))
+                    lst.Add(D512);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D768))
+                    lst.Add(D768);
+                if (dimensions.HasFlag(SteamGridDbIconDimensions.D1024))
+                    lst.Add(D1024);
 
                 return string.Join(",", lst);
             }

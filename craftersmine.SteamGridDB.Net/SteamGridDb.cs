@@ -7,19 +7,36 @@ using Newtonsoft.Json;
 
 namespace craftersmine.SteamGridDBNet
 {
-    public class SteamGridDb
+    /// <summary>
+    /// SteamGridDB API main class, get, upload, delete grids/heroes/icons/grids, search for games and get info about games. This class cannot be inherited
+    /// </summary>
+    public sealed class SteamGridDb : IDisposable
     {
         private HttpClient _httpClient;
 
+        /// <summary>
+        /// Base SteamGridDB API URI address
+        /// </summary>
         public const string BaseAddress = "https://www.steamgriddb.com/api/v2/";
 
+        /// <summary>
+        /// Gets current API key string
+        /// </summary>
         public string ApiKey { get; }
+        /// <summary>
+        /// Gets or sets connection timeout time span
+        /// </summary>
         public TimeSpan Timeout
         {
             get => _httpClient.Timeout;
             set => _httpClient.Timeout = value;
         }
 
+        /// <summary>
+        /// Instantiates new instance of SteamGridDB API class.
+        /// </summary>
+        /// <param name="apiKey">Your API key to authorize you do things</param>
+        /// <exception cref="ArgumentNullException">When API key is empty, null or whitespace</exception>
         public SteamGridDb(string apiKey)
         {
             if (string.IsNullOrWhiteSpace(apiKey))
@@ -31,26 +48,66 @@ namespace craftersmine.SteamGridDBNet
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiKey);
         }
 
+        /// <summary>
+        /// Cancels all HTTP client pending requests
+        /// </summary>
         public void CancelPendingRequests()
         {
             _httpClient.CancelPendingRequests();
         }
+        
 
+        /// <summary>
+        /// Gets game information from SteamGridDB server by SteamGridDB game ID
+        /// </summary>
+        /// <param name="id">SteamGridDB specific game ID</param>
+        /// <returns>Game information <see cref="SteamGridDbGame"/> object if succeeded</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGame?> GetGameByIdAsync(int id)
         {
             var response = await Get($"games/id/{id}");
             return response.Data!.ToObject<SteamGridDbGame>();
         }
 
+        /// <summary>
+        /// Gets game information from SteamGridDB server by game Steam app ID
+        /// </summary>
+        /// <param name="steamId">Steam specific App ID. Can be seen in URL of game Steam store page</param>
+        /// <returns>Game information <see cref="SteamGridDbGame"/> object if succeeded</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGame?> GetGameBySteamIdAsync(int steamId)
         {
             var response = await Get($"games/steam/{steamId}");
             return response.Data!.ToObject<SteamGridDbGame>();
         }
 
+        /// <summary>
+        /// Gets <see cref="SteamGridDbGrid"/> array for specified game with specified filters
+        /// </summary>
+        /// <param name="gameId">SteamGridDB game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllGrids"/></param>
+        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllGrids"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGrid[]?> GetGridsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false, 
             SteamGridDbStyles styles = SteamGridDbStyles.AllGrids, SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids, 
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbGridTypes types = SteamGridDbGridTypes.All)
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
             if (styles.HasFlag(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
                 styles &= ~(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
@@ -64,15 +121,37 @@ namespace craftersmine.SteamGridDBNet
             return response.Data!.ToObject<SteamGridDbGrid[]>();
         }
 
+        /// <summary>
+        /// Gets <see cref="SteamGridDbGrid"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
+        /// </summary>
+        /// <param name="platform">Platform of which items get</param>
+        /// <param name="platformGameId">Platform specific game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllGrids"/></param>
+        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllGrids"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentException">When more than one platform selected</exception>
         public async Task<SteamGridDbGrid[]?> GetGridsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId,
             bool nsfw = false, bool humorous = false, SteamGridDbStyles styles = SteamGridDbStyles.AllGrids,
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids,
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbGridTypes types = SteamGridDbGridTypes.All)
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
             if (styles.HasFlag(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
                 styles &= ~(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
 
             if (dimensions.HasFlag(SteamGridDbDimensions.AllHeroes)) dimensions &= ~(SteamGridDbDimensions.AllHeroes);
+
+            if (platform.MoreThanOneFlag())
+                throw new ArgumentException(Resources.Resources.Exception_MoreThanOnePlatformSelected, nameof(platform));
+
             var platforms = SteamGridDbConstants.Platforms.GetFromFlags(platform);
             var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
             var dimensionsFilter = SteamGridDbConstants.Dimensions.GetFromFlags(dimensions);
@@ -82,6 +161,21 @@ namespace craftersmine.SteamGridDBNet
             return response.Data!.ToObject<SteamGridDbGrid[]>();
         }
 
+        /// <summary>
+        /// Uploads image from <see cref="Stream"/> as <see cref="SteamGridDbGrid"/> to SteamGridDB
+        /// </summary>
+        /// <param name="gameId">SteamGridDB Game ID</param>
+        /// <param name="imageStream"><see cref="Stream"/> of data, that represents an image. Must contain data following MIME types: image/png, image/jpeg</param>
+        /// <param name="style">Style of Grid image for filters</param>
+        /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentException">When more then one style selected</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
+        /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
         public async Task<bool> UploadGridAsync(int gameId, Stream imageStream, SteamGridDbStyles style = SteamGridDbStyles.Alternate)
         {
             if (style.MoreThanOneFlag())
@@ -111,7 +205,7 @@ namespace craftersmine.SteamGridDBNet
                 mimeType = SteamGridDbConstants.Mimes.Png;
             }
             if (string.IsNullOrWhiteSpace(mimeType))
-                throw new InvalidMimeTypeException(Resources.Resources.Exception_InvalidMimeType);
+                throw new InvalidMimeTypeException(string.Format(Resources.Resources.Exception_InvalidMimeType, string.Join(",", SteamGridDbConstants.Mimes.Png, SteamGridDbConstants.Mimes.Png)));
             
             var streamContent = new StreamContent(imageStream);
             streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(mimeType);
@@ -120,15 +214,40 @@ namespace craftersmine.SteamGridDBNet
             return response.Success;
         }
 
+        /// <summary>
+        /// Uploads image from file as <see cref="SteamGridDbGrid"/> to SteamGridDB
+        /// </summary>
+        /// <param name="gameId">SteamGridDB Game ID</param>
+        /// <param name="filePath">Full path to the file that represents an image. Must contain data following MIME types: image/png, image/jpeg</param>
+        /// <param name="style">Style of Grid image for filters</param>
+        /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentException">When more then one style selected</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
+        /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
         public async Task<bool> UploadGridFromFileAsync(int gameId, string filePath,
             SteamGridDbStyles style = SteamGridDbStyles.Alternate)
         {
             using (FileStream file = File.OpenRead(filePath))
             {
-                return await UploadGridAsync(gameId, file);
+                return await UploadGridAsync(gameId, file, style);
             }
         }
 
+        /// <summary>
+        /// Removes <see cref="SteamGridDbGrid"/> with specified IDs from server
+        /// </summary>
+        /// <param name="gridIds">List of IDs of <see cref="SteamGridDbGrid"/> objects</param>
+        /// <returns><see langword="true"/> if successfully removed, otherwise <see langword="false"/> or thrown exception</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteGridsAsync(params int[] gridIds)
         {
             string ids = string.Join(",", gridIds);
@@ -136,15 +255,42 @@ namespace craftersmine.SteamGridDBNet
             return response.Success;
         }
 
+        /// <summary>
+        /// Removes single <see cref="SteamGridDbGrid"/> with specified ID from server
+        /// </summary>
+        /// <param name="gridId">ID of <see cref="SteamGridDbGrid"/> object to remove</param>
+        /// <returns><see langword="true"/> if successfully removed, otherwise <see langword="false"/> or thrown exception</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteGridAsync(int gridId)
         {
             return await DeleteGridsAsync(gridId);
         }
 
+
+        /// <summary>
+        /// Gets <see cref="SteamGridDbHero"/> array for specified game with specified filters
+        /// </summary>
+        /// <param name="gameId">SteamGridDB game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllHeroes"/></param>
+        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllHeroes"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbHero[]?> GetHeroesByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbGridTypes types = SteamGridDbGridTypes.All)
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
             if (styles.HasFlag(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
                 styles &= ~(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
@@ -160,16 +306,36 @@ namespace craftersmine.SteamGridDBNet
             return response.Data!.ToObject<SteamGridDbHero[]>();
         }
 
+        /// <summary>
+        /// Gets <see cref="SteamGridDbHero"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
+        /// </summary>
+        /// <param name="platform">Platform of which items get</param>
+        /// <param name="platformGameId">Platform specific game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllHeroes"/></param>
+        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllHeroes"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentException">When more than one platform selected</exception>
         public async Task<SteamGridDbHero[]?> GetHeroesByPlatformGameIdAsync(SteamGridDbGamePlatform platform,
             int platformGameId,
             bool nsfw = false, bool humorous = false, SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbGridTypes types = SteamGridDbGridTypes.All)
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
             if (styles.HasFlag(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
                 styles &= ~(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
             if (dimensions.HasFlag(SteamGridDbDimensions.AllGrids))
                 dimensions &= ~(SteamGridDbDimensions.AllGrids);
+            if (platform.MoreThanOneFlag())
+                throw new ArgumentException(Resources.Resources.Exception_MoreThanOnePlatformSelected, nameof(platform));
             var platforms = SteamGridDbConstants.Platforms.GetFromFlags(platform);
             var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
             var dimensionsFilter = SteamGridDbConstants.Dimensions.GetFromFlags(dimensions);
@@ -177,6 +343,461 @@ namespace craftersmine.SteamGridDBNet
             var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
             var response = await Get($"heroes/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
             return response.Data!.ToObject<SteamGridDbHero[]>();
+        }
+
+        /// <summary>
+        /// Uploads image from <see cref="Stream"/> as <see cref="SteamGridDbHero"/> to SteamGridDB
+        /// </summary>
+        /// <param name="gameId">SteamGridDB Game ID</param>
+        /// <param name="imageStream"><see cref="Stream"/> of data, that represents an image. Must contain data following MIME types: image/png, image/jpeg</param>
+        /// <param name="style">Style of Hero image for filters</param>
+        /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentException">When more then one style selected</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
+        /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
+        public async Task<bool> UploadHeroAsync(int gameId, Stream imageStream,
+            SteamGridDbStyles style = SteamGridDbStyles.Alternate)
+        {
+            if (style.MoreThanOneFlag())
+                throw new ArgumentException(Resources.Resources.Exception_MoreThanOneStyleSelected, nameof(style));
+            if (!style.HasFlag(SteamGridDbStyles.AllHeroes))
+                throw new ArgumentException(string.Format(Resources.Resources.Exception_InvalidStyleSelected,
+                    style.ToString()));
+
+            var styleStr = SteamGridDbConstants.Styles.GetFromFlags(style);
+            MultipartFormDataContent content = new MultipartFormDataContent();
+            content.Add(new StringContent(gameId.ToString()), "game_id");
+            if (style != SteamGridDbStyles.None)
+                content.Add(new StringContent(styleStr), "style");
+            byte[] signature = new byte[32];
+            var read = await imageStream.ReadAsync(signature, 0, 32);
+            if (read == 0)
+                throw new ArgumentOutOfRangeException(Resources.Resources.Exception_ImageStreamIsEmpty);
+            imageStream.Position = 0;
+            string mimeType = "";
+            string ext = "";
+            if (MimeHelper.ValidateMimeType(signature, SteamGridDbConstants.Mimes.Jpeg))
+            {
+                ext = "jpg";
+                mimeType = SteamGridDbConstants.Mimes.Jpeg;
+            }
+
+            if (MimeHelper.ValidateMimeType(signature, SteamGridDbConstants.Mimes.Png))
+            {
+                ext = "png";
+                mimeType = SteamGridDbConstants.Mimes.Png;
+            }
+            if (string.IsNullOrWhiteSpace(mimeType))
+                throw new InvalidMimeTypeException(string.Format(Resources.Resources.Exception_InvalidMimeType, string.Join(",", SteamGridDbConstants.Mimes.Png, SteamGridDbConstants.Mimes.Png)));
+
+            var streamContent = new StreamContent(imageStream);
+            streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(mimeType);
+            content.Add(streamContent, "asset", "image." + ext);
+            var response = await Post("heroes", content);
+            return response.Success;
+        }
+
+        /// <summary>
+        /// Uploads image from file as <see cref="SteamGridDbHero"/> to SteamGridDB
+        /// </summary>
+        /// <param name="gameId">SteamGridDB Game ID</param>
+        /// <param name="filePath">Full path to the file that represents an image. Must contain data following MIME types: image/png, image/jpeg</param>
+        /// <param name="style">Style of Hero image for filters</param>
+        /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentException">When more then one style selected</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
+        /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
+        public async Task<bool> UploadHeroFromFileAsync(int gameId, string filePath,
+            SteamGridDbStyles style = SteamGridDbStyles.Alternate)
+        {
+            using (FileStream fileStream = File.OpenRead(filePath))
+                return await UploadHeroAsync(gameId, fileStream, style);
+        }
+
+        /// <summary>
+        /// Removes <see cref="SteamGridDbHero"/> with specified IDs from server
+        /// </summary>
+        /// <param name="heroIds">List of IDs of <see cref="SteamGridDbHero"/> objects</param>
+        /// <returns><see langword="true"/> if successfully removed, otherwise <see langword="false"/> or thrown exception</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<bool> DeleteHeroesAsync(params int[] heroIds)
+        {
+            string ids = string.Join(",", heroIds);
+            var response = await Delete("heroes/" + ids);
+            return response.Success;
+        }
+
+        /// <summary>
+        /// Removes single <see cref="SteamGridDbHero"/> with specified ID from server
+        /// </summary>
+        /// <param name="heroId">ID of <see cref="SteamGridDbHero"/> object to remove</param>
+        /// <returns><see langword="true"/> if successfully removed, otherwise <see langword="false"/> or thrown exception</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<bool> DeleteHeroAsync(int heroId)
+        {
+            return await DeleteHeroesAsync(heroId);
+        }
+
+        /// <summary>
+        /// Gets <see cref="SteamGridDbLogo"/> array for specified game with specified filters
+        /// </summary>
+        /// <param name="gameId">SteamGridDB game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllLogos"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<SteamGridDbLogo[]?> GetLogosByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
+            SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
+            SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All)
+        {
+            if (styles.HasFlag(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllGrids))
+                styles &= ~(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllGrids);
+
+            if (formats.HasFlag(SteamGridDbFormats.Jpeg))
+                formats &= ~(SteamGridDbFormats.Jpeg);
+
+            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
+            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
+            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
+            var response = await Get($"logos/game/{gameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
+            return response.Data!.ToObject<SteamGridDbLogo[]>();
+        }
+
+        /// <summary>
+        /// Gets <see cref="SteamGridDbLogo"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
+        /// </summary>
+        /// <param name="platform">Platform of which items get</param>
+        /// <param name="platformGameId">Platform specific game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllLogos"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentException">When more than one platform selected</exception>
+        public async Task<SteamGridDbLogo[]?> GetLogosByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
+            SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
+            SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All)
+        {
+            if (styles.HasFlag(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllGrids))
+                styles &= ~(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllGrids);
+
+            if (formats.HasFlag(SteamGridDbFormats.Jpeg))
+                formats &= ~(SteamGridDbFormats.Jpeg);
+
+            if (platform.MoreThanOneFlag())
+                throw new ArgumentException(Resources.Resources.Exception_MoreThanOnePlatformSelected, nameof(platform));
+
+            var platforms = SteamGridDbConstants.Platforms.GetFromFlags(platform);
+            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
+            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
+            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
+            var response = await Get($"logos/{platforms}/{platformGameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
+            return response.Data!.ToObject<SteamGridDbLogo[]>();
+        }
+
+
+        /// <summary>
+        /// Uploads image from <see cref="Stream"/> as <see cref="SteamGridDbLogo"/> to SteamGridDB
+        /// </summary>
+        /// <param name="gameId">SteamGridDB Game ID</param>
+        /// <param name="imageStream"><see cref="Stream"/> of data, that represents an image. Must contain data following MIME types: image/png</param>
+        /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
+        /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
+        public async Task<bool> UploadLogoAsync(int gameId, Stream imageStream)
+        {
+            MultipartFormDataContent content = new MultipartFormDataContent();
+            content.Add(new StringContent(gameId.ToString()), "game_id");
+            byte[] signature = new byte[32];
+            var read = await imageStream.ReadAsync(signature, 0, 32);
+            if (read == 0)
+                throw new ArgumentOutOfRangeException(Resources.Resources.Exception_ImageStreamIsEmpty);
+            imageStream.Position = 0;
+            string mimeType = "";
+            string ext = "";
+
+            if (MimeHelper.ValidateMimeType(signature, SteamGridDbConstants.Mimes.Png))
+            {
+                ext = "png";
+                mimeType = SteamGridDbConstants.Mimes.Png;
+            }
+            if (string.IsNullOrWhiteSpace(mimeType))
+                throw new InvalidMimeTypeException(string.Format(Resources.Resources.Exception_InvalidMimeType, string.Join(",", SteamGridDbConstants.Mimes.Png, SteamGridDbConstants.Mimes.Png)));
+
+            var streamContent = new StreamContent(imageStream);
+            streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(mimeType);
+            content.Add(streamContent, "asset", "image." + ext);
+            var response = await Post("logos", content);
+            return response.Success;
+        }
+
+        /// <summary>
+        /// Uploads image from file as <see cref="SteamGridDbLogo"/> to SteamGridDB
+        /// </summary>
+        /// <param name="gameId">SteamGridDB Game ID</param>
+        /// <param name="filePath">Full path to the file that represents an image. Must contain data following MIME types: image/png</param>
+        /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
+        /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
+        public async Task<bool> UploadLogoFromFileAsync(int gameId, string filePath)
+        {
+            using (FileStream fileStream = File.OpenRead(filePath))
+                return await UploadLogoAsync(gameId, fileStream);
+        }
+
+        /// <summary>
+        /// Removes <see cref="SteamGridDbLogo"/> with specified IDs from server
+        /// </summary>
+        /// <param name="logoIds">List of IDs of <see cref="SteamGridDbLogo"/> objects</param>
+        /// <returns><see langword="true"/> if successfully removed, otherwise <see langword="false"/> or thrown exception</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<bool> DeleteLogosAsync(params int[] logoIds)
+        {
+            string ids = string.Join(",", logoIds);
+            var response = await Delete("logos/" + ids);
+            return response.Success;
+        }
+
+        /// <summary>
+        /// Removes single <see cref="SteamGridDbLogo"/> with specified ID from server
+        /// </summary>
+        /// <param name="logoId">ID of <see cref="SteamGridDbLogo"/> object to remove</param>
+        /// <returns><see langword="true"/> if successfully removed, otherwise <see langword="false"/> or thrown exception</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<bool> DeleteLogoAsync(int logoId)
+        {
+            return await DeleteLogosAsync(logoId);
+        }
+
+        /// <summary>
+        /// Gets <see cref="SteamGridDbIcon"/> array for specified game with specified filters
+        /// </summary>
+        /// <param name="gameId">SteamGridDB game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllIcons"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.AllIcons"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<SteamGridDbIcon[]?> GetIconsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
+            SteamGridDbStyles styles = SteamGridDbStyles.AllIcons,
+            SteamGridDbFormats formats = SteamGridDbFormats.AllIcons, SteamGridDbTypes types = SteamGridDbTypes.All)
+        {
+            if (styles.HasFlag(SteamGridDbStyles.AllGrids | SteamGridDbStyles.Black | SteamGridDbStyles.White))
+                styles &= ~(SteamGridDbStyles.AllGrids | SteamGridDbStyles.Black | SteamGridDbStyles.White);
+
+            if (formats.HasFlag(SteamGridDbFormats.Jpeg | SteamGridDbFormats.Webp))
+                formats &= ~(SteamGridDbFormats.Jpeg | SteamGridDbFormats.Webp);
+
+            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
+            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
+            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
+            var response = await Get($"icons/game/{gameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
+            return response.Data!.ToObject<SteamGridDbIcon[]>();
+        }
+
+        /// <summary>
+        /// Gets <see cref="SteamGridDbIcon"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
+        /// </summary>
+        /// <param name="platform">Platform of which items get</param>
+        /// <param name="platformGameId">Platform specific game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllIcons"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.AllIcons"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentException">When more than one platform selected</exception>
+        public async Task<SteamGridDbIcon[]?> GetIconsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
+            SteamGridDbStyles styles = SteamGridDbStyles.AllIcons,
+            SteamGridDbFormats formats = SteamGridDbFormats.AllIcons, SteamGridDbTypes types = SteamGridDbTypes.All)
+        {
+            if (styles.HasFlag(SteamGridDbStyles.AllGrids | SteamGridDbStyles.Black | SteamGridDbStyles.White))
+                styles &= ~(SteamGridDbStyles.AllGrids | SteamGridDbStyles.Black | SteamGridDbStyles.White);
+
+            if (formats.HasFlag(SteamGridDbFormats.Jpeg | SteamGridDbFormats.Webp))
+                formats &= ~(SteamGridDbFormats.Jpeg | SteamGridDbFormats.Webp);
+
+            if (platform.MoreThanOneFlag())
+                throw new ArgumentException(Resources.Resources.Exception_MoreThanOnePlatformSelected, nameof(platform));
+
+            var platforms = SteamGridDbConstants.Platforms.GetFromFlags(platform);
+            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
+            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
+            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
+            var response = await Get($"icons/{platforms}/{platformGameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
+            return response.Data!.ToObject<SteamGridDbIcon[]>();
+        }
+
+        /// <summary>
+        /// Uploads image from <see cref="Stream"/> as <see cref="SteamGridDbIcon"/> to SteamGridDB
+        /// </summary>
+        /// <param name="gameId">SteamGridDB Game ID</param>
+        /// <param name="imageStream"><see cref="Stream"/> of data, that represents an image. Must contain data following MIME types: image/png, image/vnd.microsoft.icon (.ico file)</param>
+        /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
+        /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
+        public async Task<bool> UploadIconAsync(int gameId, Stream imageStream)
+        {
+            MultipartFormDataContent content = new MultipartFormDataContent();
+            content.Add(new StringContent(gameId.ToString()), "game_id");
+            byte[] signature = new byte[32];
+            var read = await imageStream.ReadAsync(signature, 0, 32);
+            if (read == 0)
+                throw new ArgumentOutOfRangeException(Resources.Resources.Exception_ImageStreamIsEmpty);
+            imageStream.Position = 0;
+            string mimeType = "";
+            string ext = "";
+
+            if (MimeHelper.ValidateMimeType(signature, SteamGridDbConstants.Mimes.Png))
+            {
+                ext = "png";
+                mimeType = SteamGridDbConstants.Mimes.Png;
+            }
+            if (MimeHelper.ValidateMimeType(signature, SteamGridDbConstants.Mimes.Ico))
+            {
+                ext = "ico";
+                mimeType = SteamGridDbConstants.Mimes.Ico;
+            }
+            if (string.IsNullOrWhiteSpace(mimeType))
+                throw new InvalidMimeTypeException(string.Format(Resources.Resources.Exception_InvalidMimeType, string.Join(",", SteamGridDbConstants.Mimes.Png, SteamGridDbConstants.Mimes.Png)));
+
+            var streamContent = new StreamContent(imageStream);
+            streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(mimeType);
+            content.Add(streamContent, "asset", "image." + ext);
+            var response = await Post("icons", content);
+            return response.Success;
+        }
+
+        /// <summary>
+        /// Uploads image from file as <see cref="SteamGridDbGrid"/> to SteamGridDB
+        /// </summary>
+        /// <param name="gameId">SteamGridDB Game ID</param>
+        /// <param name="filePath">Full path to the file that represents an image. Must contain data following MIME types: image/png, image/vnd.microsoft.icon (.ico file)</param>
+        /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
+        /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
+        public async Task<bool> UploadIconFromFileAsync(int gameId, string filePath)
+        {
+            using (FileStream fileStream = File.OpenRead(filePath))
+                return await UploadIconAsync(gameId, fileStream);
+        }
+
+        /// <summary>
+        /// Removes <see cref="SteamGridDbIcon"/> with specified IDs from server
+        /// </summary>
+        /// <param name="iconIds">List of IDs of <see cref="SteamGridDbIcon"/> objects</param>
+        /// <returns><see langword="true"/> if successfully removed, otherwise <see langword="false"/> or thrown exception</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<bool> DeleteIconsAsync(params int[] iconIds)
+        {
+            string ids = string.Join(",", iconIds);
+            var response = await Delete("icons/" + ids);
+            return response.Success;
+        }
+
+        /// <summary>
+        /// Removes single <see cref="SteamGridDbIcon"/> with specified ID from server
+        /// </summary>
+        /// <param name="iconId">ID of <see cref="SteamGridDbIcon"/> object to remove</param>
+        /// <returns><see langword="true"/> if successfully removed, otherwise <see langword="false"/> or thrown exception</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<bool> DeleteIconAsync(int iconId)
+        {
+            return await DeleteIconsAsync(iconId);
+        }
+
+        /// <summary>
+        /// Searches for <see cref="SteamGridDbGame"/> object array by specified search term
+        /// </summary>
+        /// <param name="searchTerm">Search term query string</param>
+        /// <returns>Array of <see cref="SteamGridDbGame"/> objects, otherwise empty array or null</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<SteamGridDbGame[]?> SearchForGamesAsync(string searchTerm)
+        {
+            var response = await Get($"search/autocomplete/{searchTerm}");
+            return response.Data!.ToObject<SteamGridDbGame[]?>();
         }
 
         private async Task<SteamGridDbResponse> Get(string uri)
@@ -267,6 +888,15 @@ namespace craftersmine.SteamGridDBNet
         private T? DeserializeFromString<T>(string str)
         {
             return JsonConvert.DeserializeObject<T>(str);
+        }
+
+        /// <summary>
+        /// Cancels all pending requests, closes HTTP client and releases all resources used by object
+        /// </summary>
+        public void Dispose()
+        {
+            CancelPendingRequests();
+            _httpClient.Dispose();
         }
     }
 }
