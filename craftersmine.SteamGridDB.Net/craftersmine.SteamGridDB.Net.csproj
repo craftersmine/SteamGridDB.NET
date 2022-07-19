@@ -5,7 +5,31 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>craftersmine.SteamGridDBNet</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>craftersmine</Authors>
+    <Description>A .NET implementation of SteamGridDB API</Description>
+    <Copyright>Copyright © craftersmine 2022</Copyright>
+    <PackageIcon>NuGetPackageIcon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/craftersmine/SteamGridDB.NET</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/craftersmine/SteamGridDB.NET</PackageProjectUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>SteamGridDB;api</PackageTags>
+    <PackageLicenseFile>C:\Users\rodio\Desktop\Dev\craftersmine.SteamGridDB.NET\LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\NuGetPackageIcon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
