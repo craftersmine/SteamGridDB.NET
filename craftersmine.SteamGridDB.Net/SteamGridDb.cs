@@ -532,6 +532,7 @@ namespace craftersmine.SteamGridDBNet
         /// </summary>
         /// <param name="gameId">SteamGridDB Game ID</param>
         /// <param name="imageStream"><see cref="Stream"/> of data, that represents an image. Must contain data following MIME types: image/png</param>
+        /// <param name="style">Style of Hero image for filters</param>
         /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
         /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
@@ -581,6 +582,7 @@ namespace craftersmine.SteamGridDBNet
         /// </summary>
         /// <param name="gameId">SteamGridDB Game ID</param>
         /// <param name="filePath">Full path to the file that represents an image. Must contain data following MIME types: image/png</param>
+        /// <param name="style">Style of Hero image for filters</param>
         /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
         /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
@@ -702,6 +704,7 @@ namespace craftersmine.SteamGridDBNet
         /// </summary>
         /// <param name="gameId">SteamGridDB Game ID</param>
         /// <param name="imageStream"><see cref="Stream"/> of data, that represents an image. Must contain data following MIME types: image/png, image/vnd.microsoft.icon (.ico file)</param>
+        /// <param name="style">Style of Icon image for filters</param>
         /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
         /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
@@ -756,6 +759,7 @@ namespace craftersmine.SteamGridDBNet
         /// </summary>
         /// <param name="gameId">SteamGridDB Game ID</param>
         /// <param name="filePath">Full path to the file that represents an image. Must contain data following MIME types: image/png, image/vnd.microsoft.icon (.ico file)</param>
+        /// <param name="style">Style of Hero image for filters</param>
         /// <returns><see langword="true"/> if image uploaded correctly, otherwise <see langword="false"/> or exception will be thrown</returns>
         /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
