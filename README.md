@@ -2,7 +2,8 @@
 A .NET implementation of API for [SteamGridDB](https://www.steamgriddb.com) written completely in C#
 
 [![GitHub](https://img.shields.io/github/license/craftersmine/SteamGridDB.NET?color=darklime)](/LICENSE) 
-[![Nuget](https://img.shields.io/nuget/v/craftersmine.SteamGridDB.Net)](https://www.nuget.org/packages/craftersmine.SteamGridDB.Net)
+[![Nuget](https://img.shields.io/nuget/v/craftersmine.SteamGridDB.Net)](https://www.nuget.org/packages/craftersmine.SteamGridDB.Net) 
+[![GitHub Project Wiki](https://img.shields.io/badge/docs-github--wiki-brightgreen)](https://github.com/craftersmine/SteamGridDB.NET/wiki)
 
 ![Repository Preview](https://raw.githubusercontent.com/craftersmine/SteamGridDB.NET/master/.github/RepositoryPreview.png)
 
