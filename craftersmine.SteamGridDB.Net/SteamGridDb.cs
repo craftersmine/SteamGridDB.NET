@@ -540,10 +540,19 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
-        public async Task<bool> UploadLogoAsync(int gameId, Stream imageStream)
+        public async Task<bool> UploadLogoAsync(int gameId, Stream imageStream, SteamGridDbStyles style = SteamGridDbStyles.Custom)
         {
+            if (style.MoreThanOneFlag())
+                throw new ArgumentException(Resources.Resources.Exception_MoreThanOneStyleSelected, nameof(style));
+            if (!style.HasFlag(SteamGridDbStyles.Official) && !style.HasFlag(SteamGridDbStyles.Black) && !style.HasFlag(SteamGridDbStyles.White) && !style.HasFlag(SteamGridDbStyles.Custom))
+                throw new ArgumentException(string.Format(Resources.Resources.Exception_InvalidStyleSelected,
+                    style.ToString()));
+
+            var styleStr = SteamGridDbConstants.Styles.GetFromFlags(style);
             MultipartFormDataContent content = new MultipartFormDataContent();
             content.Add(new StringContent(gameId.ToString()), "game_id");
+            if (style != SteamGridDbStyles.None)
+                content.Add(new StringContent(styleStr), "style");
             byte[] signature = new byte[32];
             var read = await imageStream.ReadAsync(signature, 0, 32);
             if (read == 0)
@@ -580,10 +589,10 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
-        public async Task<bool> UploadLogoFromFileAsync(int gameId, string filePath)
+        public async Task<bool> UploadLogoFromFileAsync(int gameId, string filePath, SteamGridDbStyles style = SteamGridDbStyles.Official)
         {
             using (FileStream fileStream = File.OpenRead(filePath))
-                return await UploadLogoAsync(gameId, fileStream);
+                return await UploadLogoAsync(gameId, fileStream, style);
         }
 
         /// <summary>
@@ -701,10 +710,19 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
-        public async Task<bool> UploadIconAsync(int gameId, Stream imageStream)
+        public async Task<bool> UploadIconAsync(int gameId, Stream imageStream, SteamGridDbStyles style = SteamGridDbStyles.Custom)
         {
+            if (style.MoreThanOneFlag())
+                throw new ArgumentException(Resources.Resources.Exception_MoreThanOneStyleSelected, nameof(style));
+            if (!style.HasFlag(SteamGridDbStyles.Official) && !style.HasFlag(SteamGridDbStyles.Custom))
+                throw new ArgumentException(string.Format(Resources.Resources.Exception_InvalidStyleSelected,
+                    style.ToString()));
+
+            var styleStr = SteamGridDbConstants.Styles.GetFromFlags(style);
             MultipartFormDataContent content = new MultipartFormDataContent();
             content.Add(new StringContent(gameId.ToString()), "game_id");
+            if (style != SteamGridDbStyles.None)
+                content.Add(new StringContent(styleStr), "style");
             byte[] signature = new byte[32];
             var read = await imageStream.ReadAsync(signature, 0, 32);
             if (read == 0)
@@ -746,10 +764,10 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
-        public async Task<bool> UploadIconFromFileAsync(int gameId, string filePath)
+        public async Task<bool> UploadIconFromFileAsync(int gameId, string filePath, SteamGridDbStyles style = SteamGridDbStyles.Custom)
         {
             using (FileStream fileStream = File.OpenRead(filePath))
-                return await UploadIconAsync(gameId, fileStream);
+                return await UploadIconAsync(gameId, fileStream, style);
         }
 
         /// <summary>
