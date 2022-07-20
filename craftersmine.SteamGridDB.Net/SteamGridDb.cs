@@ -365,7 +365,7 @@ namespace craftersmine.SteamGridDBNet
         {
             if (style.MoreThanOneFlag())
                 throw new ArgumentException(Resources.Resources.Exception_MoreThanOneStyleSelected, nameof(style));
-            if (!style.HasFlag(SteamGridDbStyles.AllHeroes))
+            if (!style.HasFlag(SteamGridDbStyles.Alternate) && !style.HasFlag(SteamGridDbStyles.Blurred) && !style.HasFlag(SteamGridDbStyles.Material))
                 throw new ArgumentException(string.Format(Resources.Resources.Exception_InvalidStyleSelected,
                     style.ToString()));
 
