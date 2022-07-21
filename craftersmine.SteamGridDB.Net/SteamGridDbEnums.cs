@@ -248,6 +248,9 @@ namespace craftersmine.SteamGridDBNet
         /// Animated image. APNG or WEBP
         /// </summary>
         Animated = 2,
+        /// <summary>
+        /// Both static and animated images. Simple PNG, JPEG, static WEBP, APNG and animated WEBP
+        /// </summary>
         All = Static | Animated
     }
 

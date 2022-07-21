@@ -1,34 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <RootNamespace>craftersmine.SteamGridDBNet</RootNamespace>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RootNamespace>craftersmine.SteamGridDBNet</RootNamespace>
+    <Version>1.1.0</Version>
     <Authors>craftersmine</Authors>
     <Description>A .NET implementation of SteamGridDB API</Description>
     <Copyright>Copyright © craftersmine 2022</Copyright>
+    <PackageProjectUrl>https://github.com/craftersmine/SteamGridDB.NET</PackageProjectUrl>
     <PackageIcon>NuGetPackageIcon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/craftersmine/SteamGridDB.NET</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/craftersmine/SteamGridDB.NET</PackageProjectUrl>
-    <RepositoryType>github</RepositoryType>
-    <PackageTags>SteamGridDB;api</PackageTags>
-    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.0.1</Version>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
+    <None Include="..\NuGetPackageIcon.png" Link="NuGetPackageIcon.png">
       <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
     </None>
-    <None Include="..\NuGetPackageIcon.png">
-      <Pack>True</Pack>
+    <None Include="..\README.md" Link="README.md">
       <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
     </None>
   </ItemGroup>
 
@@ -38,16 +34,16 @@
 
   <ItemGroup>
     <Compile Update="Resources\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 

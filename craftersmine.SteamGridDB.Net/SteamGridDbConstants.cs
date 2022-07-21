@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Collections.Generic;
 
 namespace craftersmine.SteamGridDBNet
 {

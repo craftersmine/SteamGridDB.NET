@@ -13,6 +13,8 @@ Supports:
 * Get, Upload and Delete items
 * Search for supported games on SteamGridDB
 
+Relied on .NET `HttpClient`
+
 Installation:
 * Using NuGet: ```Install-Package craftersmine.SteamGridDB.Net```
 * Download NuGet package from [Releases](https://github.com/craftersmine/SteamGridDB.NET/releases) page

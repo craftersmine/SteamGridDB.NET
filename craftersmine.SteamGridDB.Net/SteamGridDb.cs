@@ -1,6 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
-
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 using craftersmine.SteamGridDBNet.Exceptions;
 
 using Newtonsoft.Json;
@@ -12,7 +16,7 @@ namespace craftersmine.SteamGridDBNet
     /// </summary>
     public sealed class SteamGridDb : IDisposable
     {
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         /// <summary>
         /// Base SteamGridDB API URI address
@@ -67,10 +71,11 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbGame?> GetGameByIdAsync(int id)
+        public async Task<SteamGridDbGame> GetGameByIdAsync(int id)
         {
             var response = await Get($"games/id/{id}");
-            return response.Data!.ToObject<SteamGridDbGame>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbGame>();
+            return null;
         }
 
         /// <summary>
@@ -83,10 +88,11 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbGame?> GetGameBySteamIdAsync(int steamId)
+        public async Task<SteamGridDbGame> GetGameBySteamIdAsync(int steamId)
         {
             var response = await Get($"games/steam/{steamId}");
-            return response.Data!.ToObject<SteamGridDbGame>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbGame>();
+            return null;
         }
 
         /// <summary>
@@ -105,7 +111,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbGrid[]?> GetGridsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false, 
+        public async Task<SteamGridDbGrid[]> GetGridsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false, 
             SteamGridDbStyles styles = SteamGridDbStyles.AllGrids, SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids, 
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
@@ -118,7 +124,8 @@ namespace craftersmine.SteamGridDBNet
             var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
             var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
             var response = await Get($"grids/game/{gameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
-            return response.Data!.ToObject<SteamGridDbGrid[]>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbGrid[]>();
+            return null;
         }
 
         /// <summary>
@@ -139,7 +146,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more than one platform selected</exception>
-        public async Task<SteamGridDbGrid[]?> GetGridsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId,
+        public async Task<SteamGridDbGrid[]> GetGridsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId,
             bool nsfw = false, bool humorous = false, SteamGridDbStyles styles = SteamGridDbStyles.AllGrids,
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids,
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
@@ -158,7 +165,8 @@ namespace craftersmine.SteamGridDBNet
             var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
             var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
             var response = await Get($"grids/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
-            return response.Data!.ToObject<SteamGridDbGrid[]>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbGrid[]>();
+            return null;
         }
 
         /// <summary>
@@ -287,7 +295,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbHero[]?> GetHeroesByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
+        public async Task<SteamGridDbHero[]> GetHeroesByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
@@ -303,7 +311,8 @@ namespace craftersmine.SteamGridDBNet
             var response =
                 await Get(
                     $"heroes/game/{gameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
-            return response.Data!.ToObject<SteamGridDbHero[]>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbHero[]>();
+            return null;
         }
 
         /// <summary>
@@ -324,7 +333,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more than one platform selected</exception>
-        public async Task<SteamGridDbHero[]?> GetHeroesByPlatformGameIdAsync(SteamGridDbGamePlatform platform,
+        public async Task<SteamGridDbHero[]> GetHeroesByPlatformGameIdAsync(SteamGridDbGamePlatform platform,
             int platformGameId,
             bool nsfw = false, bool humorous = false, SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
@@ -342,7 +351,8 @@ namespace craftersmine.SteamGridDBNet
             var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
             var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
             var response = await Get($"heroes/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
-            return response.Data!.ToObject<SteamGridDbHero[]>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbHero[]>();
+            return null;
         }
 
         /// <summary>
@@ -471,7 +481,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbLogo[]?> GetLogosByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
+        public async Task<SteamGridDbLogo[]> GetLogosByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
             SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
@@ -485,7 +495,8 @@ namespace craftersmine.SteamGridDBNet
             var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
             var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
             var response = await Get($"logos/game/{gameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
-            return response.Data!.ToObject<SteamGridDbLogo[]>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbLogo[]>();
+            return null;
         }
 
         /// <summary>
@@ -505,7 +516,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more than one platform selected</exception>
-        public async Task<SteamGridDbLogo[]?> GetLogosByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
+        public async Task<SteamGridDbLogo[]> GetLogosByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
             SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
@@ -523,7 +534,8 @@ namespace craftersmine.SteamGridDBNet
             var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
             var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
             var response = await Get($"logos/{platforms}/{platformGameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
-            return response.Data!.ToObject<SteamGridDbLogo[]>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbLogo[]>();
+            return null;
         }
 
 
@@ -644,7 +656,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbIcon[]?> GetIconsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
+        public async Task<SteamGridDbIcon[]> GetIconsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllIcons,
             SteamGridDbFormats formats = SteamGridDbFormats.AllIcons, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
@@ -658,7 +670,8 @@ namespace craftersmine.SteamGridDBNet
             var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
             var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
             var response = await Get($"icons/game/{gameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
-            return response.Data!.ToObject<SteamGridDbIcon[]>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbIcon[]>();
+            return null;
         }
 
         /// <summary>
@@ -678,7 +691,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more than one platform selected</exception>
-        public async Task<SteamGridDbIcon[]?> GetIconsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
+        public async Task<SteamGridDbIcon[]> GetIconsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllIcons,
             SteamGridDbFormats formats = SteamGridDbFormats.AllIcons, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
@@ -696,7 +709,8 @@ namespace craftersmine.SteamGridDBNet
             var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
             var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
             var response = await Get($"icons/{platforms}/{platformGameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
-            return response.Data!.ToObject<SteamGridDbIcon[]>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbIcon[]>();
+            return null;
         }
 
         /// <summary>
@@ -816,10 +830,11 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbGame[]?> SearchForGamesAsync(string searchTerm)
+        public async Task<SteamGridDbGame[]> SearchForGamesAsync(string searchTerm)
         {
             var response = await Get($"search/autocomplete/{searchTerm}");
-            return response.Data!.ToObject<SteamGridDbGame[]?>();
+            if (response.Data != null) return response.Data.ToObject<SteamGridDbGame[]>();
+            return null;
         }
 
         private async Task<SteamGridDbResponse> Get(string uri)
@@ -827,25 +842,28 @@ namespace craftersmine.SteamGridDBNet
             var response = await _httpClient.GetAsync(uri);
             var str = await response.Content.ReadAsStringAsync();
             var respObj = JsonConvert.DeserializeObject<SteamGridDbResponse>(str);
+            var errors = new string[] { };
 
-            if (respObj!.Success)
+            if (respObj != null && respObj.Success)
                 return respObj;
 
+            if (respObj != null)
+                errors = respObj.Errors;
 
             switch (response.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
                     throw new SteamGridDbBadRequestException(Resources.Resources.Exception_BadRequest)
-                        { ExceptionType = ExceptionType.BadRequest, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.BadRequest, SteamGridDbErrorMessages = errors };
                 case HttpStatusCode.Forbidden:
                     throw new SteamGridDbForbiddenException(Resources.Resources.Exception_Forbidden)
-                        { ExceptionType = ExceptionType.Forbidden, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.Forbidden, SteamGridDbErrorMessages = errors };
                 case HttpStatusCode.NotFound:
                     throw new SteamGridDbNotFoundException(Resources.Resources.Exception_NotFound)
-                        { ExceptionType = ExceptionType.NotFound, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.NotFound, SteamGridDbErrorMessages = errors };
                 case HttpStatusCode.Unauthorized:
                     throw new SteamGridDbUnauthorizedException(Resources.Resources.Exception_Unauthorized)
-                        { ExceptionType = ExceptionType.Unauthorized, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.Unauthorized, SteamGridDbErrorMessages = errors };
             }
 
             throw new SteamGridDbException(Resources.Resources.Exception_Unknown);
@@ -856,24 +874,28 @@ namespace craftersmine.SteamGridDBNet
             var response = await _httpClient.PostAsync(uri, content);
             var str = await response.Content.ReadAsStringAsync();
             var respObj = JsonConvert.DeserializeObject<SteamGridDbResponse>(str);
+            var errors = new string[] { };
 
-            if (respObj!.Success)
+            if (respObj != null && respObj.Success)
                 return respObj;
+
+            if (respObj != null)
+                errors = respObj.Errors;
 
             switch (response.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
                     throw new SteamGridDbBadRequestException(Resources.Resources.Exception_BadRequest)
-                        { ExceptionType = ExceptionType.BadRequest, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.BadRequest, SteamGridDbErrorMessages = errors };
                 case HttpStatusCode.Forbidden:
                     throw new SteamGridDbForbiddenException(Resources.Resources.Exception_Forbidden)
-                        { ExceptionType = ExceptionType.Forbidden, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.Forbidden, SteamGridDbErrorMessages = errors };
                 case HttpStatusCode.NotFound:
                     throw new SteamGridDbNotFoundException(Resources.Resources.Exception_NotFound)
-                        { ExceptionType = ExceptionType.NotFound, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.NotFound, SteamGridDbErrorMessages = errors };
                 case HttpStatusCode.Unauthorized:
                     throw new SteamGridDbUnauthorizedException(Resources.Resources.Exception_Unauthorized)
-                        { ExceptionType = ExceptionType.Unauthorized, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.Unauthorized, SteamGridDbErrorMessages = errors };
             }
 
             throw new SteamGridDbException(Resources.Resources.Exception_Unknown);
@@ -884,32 +906,31 @@ namespace craftersmine.SteamGridDBNet
             var response = await _httpClient.DeleteAsync(uri);
             var str = await response.Content.ReadAsStringAsync();
             var respObj = JsonConvert.DeserializeObject<SteamGridDbResponse>(str);
+            var errors = new string[] { };
 
-            if (respObj!.Success)
+            if (respObj != null && respObj.Success)
                 return respObj;
+
+            if (respObj != null)
+                errors = respObj.Errors;
 
             switch (response.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
                     throw new SteamGridDbBadRequestException(Resources.Resources.Exception_BadRequest)
-                        { ExceptionType = ExceptionType.BadRequest, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.BadRequest, SteamGridDbErrorMessages = errors };
                 case HttpStatusCode.Forbidden:
                     throw new SteamGridDbForbiddenException(Resources.Resources.Exception_Forbidden)
-                        { ExceptionType = ExceptionType.Forbidden, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.Forbidden, SteamGridDbErrorMessages = errors };
                 case HttpStatusCode.NotFound:
                     throw new SteamGridDbNotFoundException(Resources.Resources.Exception_NotFound)
-                        { ExceptionType = ExceptionType.NotFound, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.NotFound, SteamGridDbErrorMessages = errors };
                 case HttpStatusCode.Unauthorized:
                     throw new SteamGridDbUnauthorizedException(Resources.Resources.Exception_Unauthorized)
-                        { ExceptionType = ExceptionType.Unauthorized, SteamGridDbErrorMessages = respObj.Errors };
+                        { ExceptionType = ExceptionType.Unauthorized, SteamGridDbErrorMessages = errors };
             }
 
             throw new SteamGridDbException(Resources.Resources.Exception_Unknown);
-        }
- 
-        private T? DeserializeFromString<T>(string str)
-        {
-            return JsonConvert.DeserializeObject<T>(str);
         }
 
         /// <summary>

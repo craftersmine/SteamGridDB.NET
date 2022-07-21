@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="craftersmine.SteamGridDB.Net" Version="1.0.0" />
+    <PackageReference Include="craftersmine.SteamGridDB.Net" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

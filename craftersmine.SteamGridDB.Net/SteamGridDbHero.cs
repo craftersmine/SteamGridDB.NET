@@ -18,6 +18,6 @@ namespace craftersmine.SteamGridDBNet
         /// Gets a user-specified tags for Hero
         /// </summary>
         [JsonProperty("tags")]
-        public string[]? Tags { get; private set; }
+        public string[] Tags { get; private set; }
     }
 }
