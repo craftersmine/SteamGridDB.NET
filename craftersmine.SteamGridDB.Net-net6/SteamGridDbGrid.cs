@@ -10,14 +10,14 @@ using Newtonsoft.Json.Serialization;
 namespace craftersmine.SteamGridDBNet
 {
     /// <summary>
-    /// Represents a Hero item from SteamGridDB. This class cannot be inherited
+    /// Represents a Grid item from SteamGridDB. This class cannot be inherited
     /// </summary>
-    public sealed class SteamGridDbHero : SteamGridDbObject
+    public sealed class SteamGridDbGrid : SteamGridDbObject
     {
         /// <summary>
-        /// Gets a user-specified tags for Hero
+        /// Gets a user-specified tags for grid
         /// </summary>
         [JsonProperty("tags")]
-        public string[] Tags { get; private set; }
+        public string[]? Tags { get; private set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace craftersmine.SteamGridDBNet
@@ -13,12 +12,12 @@ namespace craftersmine.SteamGridDBNet
         /// Gets a name of game
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; private set; }
+        public string? Name { get; private set; }
         /// <summary>
         /// Gets a bitwise mask of platforms on which game is exists
         /// </summary>
         [JsonProperty("types")]
-        public SteamGridDbGamePlatform[] Platforms { get; private set; }
+        public SteamGridDbGamePlatform[]? Platforms { get; private set; }
         /// <summary>
         /// Gets <see langword="true"/> if game is verified on SteamGridDB, otherwise <see langword="false"/>
         /// </summary>

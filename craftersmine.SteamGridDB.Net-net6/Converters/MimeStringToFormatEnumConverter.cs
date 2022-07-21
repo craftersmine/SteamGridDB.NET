@@ -9,7 +9,7 @@ namespace craftersmine.SteamGridDBNet.Converters
 {
     internal class MimeStringToFormatEnumConverter : JsonConverter
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             if (value is SteamGridDbFormats)
             {
@@ -31,7 +31,7 @@ namespace craftersmine.SteamGridDBNet.Converters
             }
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.String)
             {

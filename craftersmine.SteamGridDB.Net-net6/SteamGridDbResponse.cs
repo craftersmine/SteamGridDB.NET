@@ -22,11 +22,11 @@ namespace craftersmine.SteamGridDBNet
         /// Gets a <see cref="JToken"/> object of resulting data. Can be null
         /// </summary>
         [JsonProperty("data")]
-        public JToken Data { get; private set; }
+        public JToken? Data { get; private set; }
         /// <summary>
         /// Gets an array of strings that represent error messages of SteamGridDB
         /// </summary>
         [JsonProperty("errors")]
-        public string[] Errors { get; private set; }
+        public string[]? Errors { get; private set; }
     }
 }

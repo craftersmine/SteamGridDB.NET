@@ -21,7 +21,7 @@ namespace craftersmine.SteamGridDBNet.Exceptions
         /// <summary>
         /// Gets an array of SteamGridDB API response error messages, when request is not succeeded
         /// </summary>
-        public string[] SteamGridDbErrorMessages { get; set; }
+        public string[]? SteamGridDbErrorMessages { get; set; }
 
         public SteamGridDbException()
         {

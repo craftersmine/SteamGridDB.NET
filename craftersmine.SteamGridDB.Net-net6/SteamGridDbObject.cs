@@ -51,7 +51,7 @@ namespace craftersmine.SteamGridDBNet
         /// Gets user specified notes for object
         /// </summary>
         [JsonProperty("notes")]
-        public string Notes { get; private set; }
+        public string? Notes { get; private set; }
         /// <summary>
         /// Gets item image format
         /// </summary>
@@ -61,17 +61,17 @@ namespace craftersmine.SteamGridDBNet
         /// Gets item language
         /// </summary>
         [JsonProperty("language")]
-        public string Language { get; private set; }
+        public string? Language { get; private set; }
         /// <summary>
         /// Gets item full image URL
         /// </summary>
         [JsonProperty("url")]
-        public string FullImageUrl { get; private set; }
+        public string? FullImageUrl { get; private set; }
         /// <summary>
         /// Gets item thumbnail image URL
         /// </summary>
         [JsonProperty("thumb")]
-        public string ThumbnailImageUrl { get; private set; }
+        public string? ThumbnailImageUrl { get; private set; }
         /// <summary>
         /// Gets <see langword="true"/> if item is locked by user, otherwise <see langword="false"/>. No official documentation
         /// </summary>
@@ -96,6 +96,6 @@ namespace craftersmine.SteamGridDBNet
         /// Gets a <see cref="SteamAuthor"/> object that created that item
         /// </summary>
         [JsonProperty("author")]
-        public SteamAuthor Author { get; private set; }
+        public SteamAuthor? Author { get; private set; }
     }
 }

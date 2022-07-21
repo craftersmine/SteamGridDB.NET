@@ -9,7 +9,7 @@ namespace craftersmine.SteamGridDBNet.Converters
 {
     internal class UnixDateTimeConverter : JsonConverter
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             long val;
             if (value is DateTime)
@@ -23,7 +23,7 @@ namespace craftersmine.SteamGridDBNet.Converters
             writer.WriteValue(val);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
                 return new DateTime(1970, 1, 1);
