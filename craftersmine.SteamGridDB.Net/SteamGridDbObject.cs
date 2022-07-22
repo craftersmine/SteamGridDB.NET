@@ -13,6 +13,8 @@ namespace craftersmine.SteamGridDBNet
     /// </summary>
     public class SteamGridDbObject
     {
+        internal SteamGridDb ApiInstance { get; set; }
+
         /// <summary>
         /// Gets SteamGridDB item ID
         /// </summary>
@@ -166,7 +168,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="PathTooLongException">When specified path is too long</exception>
         /// <exception cref="DirectoryNotFoundException">When file directory or part of path not found or invalid</exception>
         /// <exception cref="NotSupportedException">When path format has invalid format</exception>
-        public async void DownloadToFile(string filePath)
+        public async void DownloadToFileAsync(string filePath)
         {
             var stream = await GetImageAsStreamAsync(false);
             using (FileStream fs = File.OpenWrite(filePath))
@@ -185,13 +187,36 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="PathTooLongException">When specified path is too long</exception>
         /// <exception cref="DirectoryNotFoundException">When file directory or part of path not found or invalid</exception>
         /// <exception cref="NotSupportedException">When path format has invalid format</exception>
-        public async void DownloadThumbnailToFile(string filePath)
+        public async void DownloadThumbnailToFileAsync(string filePath)
         {
             var stream = await GetImageAsStreamAsync(true);
             using (FileStream fs = File.OpenWrite(filePath))
             {
                 await stream.CopyToAsync(fs);
             }
+        }
+
+        /// <summary>
+        /// Deletes item from server
+        /// </summary>
+        /// <returns><see langword="true"/> if item is deleted from server, otherwise <see langword="false"/></returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<bool> DeleteFromServerAsync()
+        {
+            if (this is SteamGridDbGrid)
+                return await ApiInstance.DeleteGridAsync(Id);
+            if (this is SteamGridDbHero)
+                return await ApiInstance.DeleteHeroAsync(Id);
+            if (this is SteamGridDbLogo)
+                return await ApiInstance.DeleteLogoAsync(Id);
+            if (this is SteamGridDbIcon)
+                return await ApiInstance.DeleteIconAsync(Id);
+
+            return false;
         }
     }
 }
