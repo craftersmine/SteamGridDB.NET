@@ -156,4 +156,7 @@
   <data name="Exception.Unknown" xml:space="preserve">
     <value>Unknown Exception occurred.</value>
   </data>
+  <data name="Exception.UnknownImageException" xml:space="preserve">
+    <value>Unknown error has occurred while downloading image.</value>
+  </data>
 </root>

@@ -176,5 +176,14 @@ namespace craftersmine.SteamGridDBNet.Resources {
                 return ResourceManager.GetString("Exception.Unknown", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unknown error has occurred while downloading image..
+        /// </summary>
+        internal static string Exception_UnknownImageException {
+            get {
+                return ResourceManager.GetString("Exception.UnknownImageException", resourceCulture);
+            }
+        }
     }
 }
