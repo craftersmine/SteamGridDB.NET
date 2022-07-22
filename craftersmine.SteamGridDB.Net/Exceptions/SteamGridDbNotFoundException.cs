@@ -5,6 +5,10 @@
     /// </summary>
     public class SteamGridDbNotFoundException : SteamGridDbException
     {
+        /// <summary>
+        /// Instantiates new instance of <see cref="SteamGridDbNotFoundException"/>
+        /// </summary>
+        /// <param name="message"></param>
         public SteamGridDbNotFoundException(string message) : base(message)
         {
 

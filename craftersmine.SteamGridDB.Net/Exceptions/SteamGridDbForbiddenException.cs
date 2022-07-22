@@ -5,6 +5,10 @@
     /// </summary>
     public class SteamGridDbForbiddenException : SteamGridDbException
     {
+        /// <summary>
+        /// Instantiates new instance of <see cref="SteamGridDbForbiddenException"/>
+        /// </summary>
+        /// <param name="message"></param>
         public SteamGridDbForbiddenException(string message) : base(message)
         {
 

@@ -5,6 +5,10 @@
     /// </summary>
     public class SteamGridDbBadRequestException : SteamGridDbException
     {
+        /// <summary>
+        /// Instantiates new instance of <see cref="SteamGridDbBadRequestException"/>
+        /// </summary>
+        /// <param name="message"></param>
         public SteamGridDbBadRequestException(string message) : base(message)
         {
 

@@ -5,6 +5,10 @@
     /// </summary>
     public class SteamGridDbUnauthorizedException : SteamGridDbException
     {
+        /// <summary>
+        /// Instantiates new instance of <see cref="SteamGridDbUnauthorizedException"/>
+        /// </summary>
+        /// <param name="message"></param>
         public SteamGridDbUnauthorizedException(string message) : base(message)
         {
 

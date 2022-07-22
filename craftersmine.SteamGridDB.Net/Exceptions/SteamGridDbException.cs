@@ -18,18 +18,35 @@ namespace craftersmine.SteamGridDBNet.Exceptions
         /// </summary>
         public string[] SteamGridDbErrorMessages { get; set; }
 
+        /// <summary>
+        /// Instantiates new instance of <see cref="SteamGridDbException"/>
+        /// </summary>
         public SteamGridDbException()
         {
         }
 
+        /// <summary>
+        /// Instantiates new instance of <see cref="SteamGridDbException"/>
+        /// </summary>
+        /// <param name="message"></param>
         public SteamGridDbException(string message) : base(message)
         {
         }
 
+        /// <summary>
+        /// Instantiates new instance of <see cref="SteamGridDbException"/>
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public SteamGridDbException(string message, Exception inner) : base(message, inner)
         {
         }
 
+        /// <summary>
+        /// Instantiates new instance of <see cref="SteamGridDbException"/>
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected SteamGridDbException(
             SerializationInfo info,
             StreamingContext context) : base(info, context)
@@ -42,10 +59,25 @@ namespace craftersmine.SteamGridDBNet.Exceptions
     /// </summary>
     public enum ExceptionType
     {
+        /// <summary>
+        /// When unauthorized access to API made
+        /// </summary>
         Unauthorized = 401,
+        /// <summary>
+        /// When resource not found on server
+        /// </summary>
         NotFound = 404,
+        /// <summary>
+        /// When request to server constructed incorrectly
+        /// </summary>
         BadRequest = 400,
+        /// <summary>
+        /// When made request is forbidden on server
+        /// </summary>
         Forbidden = 403,
+        /// <summary>
+        /// When unknown error occurred
+        /// </summary>
         Unknown = 0
     }
 }
