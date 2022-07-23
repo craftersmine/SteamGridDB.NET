@@ -22,5 +22,9 @@ namespace craftersmine.SteamGridDBNet
         /// </summary>
         [JsonProperty("avatar")]
         public string AvatarUrl { get; private set; }
+        /// <summary>
+        /// Gets full URL to Steam Profile of Author
+        /// </summary>
+        public string SteamProfileUrl => "https://steamcommunity.com/profiles/" + SteamId64;
     }
 }
