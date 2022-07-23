@@ -21,9 +21,9 @@ namespace craftersmine.SteamGridDBNet
         [JsonProperty("id")]
         public int Id { get; private set; }
         /// <summary>
-        /// Gets item Score. No official documentation
+        /// Gets item Score. Obsolete by SteamGridDB API and will be always 0
         /// </summary>
-        [JsonProperty("score")]
+        [JsonProperty("score"), Obsolete("This property is marked as obsolete by API developer and left only for backwards compatibility. This property will always return false")]
         public int Score { get; private set; }
         /// <summary>
         /// Gets an item style
@@ -76,9 +76,9 @@ namespace craftersmine.SteamGridDBNet
         [JsonProperty("thumb")]
         public string ThumbnailImageUrl { get; private set; }
         /// <summary>
-        /// Gets <see langword="true"/> if item is locked by user, otherwise <see langword="false"/>. No official documentation
+        /// Gets <see langword="true"/> if item is locked by user, otherwise <see langword="false"/>. Obsolete by SteamGridDB API and will be always <see langword="false"/>
         /// </summary>
-        [JsonProperty("lock")]
+        [JsonProperty("lock"), Obsolete("This property is marked as obsolete by API developer and left only for backwards compatibility. This property will always return false")]
         public bool IsLocked { get; private set; }
         /// <summary>
         /// Gets <see langword="true"/> if contains content that can cause seizures or epilepsy, otherwise <see langword="false"/>
@@ -86,14 +86,14 @@ namespace craftersmine.SteamGridDBNet
         [JsonProperty("epilepsy")]
         public bool CanCauseEpilepsy { get; private set; }
         /// <summary>
-        /// Gets a number of upvotes for item. No official documentation
+        /// Gets a number of upvotes for item. Obsolete by SteamGridDB API and will be always 0
         /// </summary>
-        [JsonProperty("upvotes")]
+        [JsonProperty("upvotes"), Obsolete("This property is marked as obsolete by API developer and left only for backwards compatibility. This property will always return 0")]
         public int Upvotes { get; private set; }
         /// <summary>
-        /// Gets a number of downvotes for item. No official documentation
+        /// Gets a number of downvotes for item. Obsolete by SteamGridDB API and will be always 0
         /// </summary>
-        [JsonProperty("downvotes")]
+        [JsonProperty("downvotes"), Obsolete("This property is marked as obsolete by API developer and left only for backwards compatibility. This property will always return 0")]
         public int Downvotes { get; private set; }
         /// <summary>
         /// Gets a <see cref="SteamAuthor"/> object that created that item
