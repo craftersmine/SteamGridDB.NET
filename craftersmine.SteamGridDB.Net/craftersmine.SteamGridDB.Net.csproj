@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <RootNamespace>craftersmine.SteamGridDBNet</RootNamespace>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>craftersmine</Authors>
     <Description>A .NET implementation of SteamGridDB API</Description>
     <Copyright>Copyright © craftersmine 2022</Copyright>
