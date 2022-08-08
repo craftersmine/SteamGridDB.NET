@@ -15,6 +15,11 @@ Supports:
 
 Relied on .NET `HttpClient`
 
+How to use library and XML documentation can be found here:
+[Repository Wiki](https://github.com/craftersmine/SteamGridDB.NET/wiki)
+
+If you want a new feature for library [create new feature request issue](https://github.com/craftersmine/SteamGridDB.NET/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=)
+
 Installation:
 * Search for `craftersmine.SteamGridDB` in NuGet explorer in Visual Studio (or your IDE)
 * Using NuGet Package Manager: ```PM> Install-Package craftersmine.SteamGridDB.Net```
