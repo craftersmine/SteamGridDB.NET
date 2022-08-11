@@ -8,7 +8,7 @@ A .NET implementation of API for [SteamGridDB](https://www.steamgriddb.com) writ
 
 ![Repository Preview](https://raw.githubusercontent.com/craftersmine/SteamGridDB.NET/master/.github/RepositoryPreview.png)
 
-Supports:
+## Supports:
 * All types of SteamGridDB items (Grids, Heroes, Icons and Logos)
 * Get, Upload and Delete items
 * Search for supported games on SteamGridDB
@@ -20,7 +20,7 @@ How to use library and XML documentation can be found here:
 
 If you want a new feature for library [create new feature request issue](https://github.com/craftersmine/SteamGridDB.NET/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=)
 
-Installation:
+## Installation:
 * Search for `craftersmine.SteamGridDB` in NuGet explorer in Visual Studio (or your IDE)
 * Using NuGet Package Manager: ```PM> Install-Package craftersmine.SteamGridDB.Net```
 * Download NuGet package from [Releases](https://github.com/craftersmine/SteamGridDB.NET/releases) page and put it in your [Local NuGet Feed](https://docs.microsoft.com/en-us/nuget/hosting-packages/overview)
