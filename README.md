@@ -25,7 +25,7 @@ If you want a new feature for library [create new feature request issue](https:/
 * Using NuGet Package Manager: ```PM> Install-Package craftersmine.SteamGridDB.Net```
 * Download NuGet package from [Releases](https://github.com/craftersmine/SteamGridDB.NET/releases) page and put it in your [Local NuGet Feed](https://docs.microsoft.com/en-us/nuget/hosting-packages/overview)
 
-## Getting Started
+## Usage:
 * Add `using craftersmine.SteamGridDB` directive
 * Instantiate new object of type `SteamGridDb` with your API key
 More information [here](https://github.com/craftersmine/SteamGridDB.NET/wiki/Getting-started-and-Using-the-library)
