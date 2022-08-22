@@ -28,4 +28,5 @@ If you want a new feature for library [create new feature request issue](https:/
 ## Usage:
 * Add `using craftersmine.SteamGridDB` directive
 * Instantiate new object of type `SteamGridDb` with your API key
+
 More information [here](https://github.com/craftersmine/SteamGridDB.NET/wiki/Getting-started-and-Using-the-library)
