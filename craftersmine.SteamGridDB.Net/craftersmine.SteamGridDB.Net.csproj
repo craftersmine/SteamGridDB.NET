@@ -19,7 +19,7 @@
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	  <DebugSymbols>True</DebugSymbols>
-	  <DebugType>pdbonly</DebugType>
+	  <DebugType>full</DebugType>
   </PropertyGroup>
 
 	<ItemGroup>
