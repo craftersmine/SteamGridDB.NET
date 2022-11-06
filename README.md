@@ -2,10 +2,11 @@
 A .NET implementation of API for [SteamGridDB](https://www.steamgriddb.com) written completely in C#
 
 [![GitHub](https://img.shields.io/github/license/craftersmine/SteamGridDB.NET?color=darklime)](/LICENSE) 
-[![Nuget](https://img.shields.io/nuget/v/craftersmine.SteamGridDB.Net)](https://www.nuget.org/packages/craftersmine.SteamGridDB.Net) 
-[![Nuget](https://img.shields.io/nuget/dt/craftersmine.SteamGridDb.Net?label=nuget%20downloads)](https://www.nuget.org/packages/craftersmine.SteamGridDB.Net) 
+[![Nuget](https://img.shields.io/nuget/v/craftersmine.SteamGridDB.Net?logo=nuget)](https://www.nuget.org/packages/craftersmine.SteamGridDB.Net) 
+[![Nuget](https://img.shields.io/nuget/dt/craftersmine.SteamGridDb.Net?label=nuget%20downloads&logo=nuget)](https://www.nuget.org/packages/craftersmine.SteamGridDB.Net) 
+[![GitHub Releases](https://img.shields.io/github/downloads/craftersmine/SteamGridDb.Net/total?label=github%20downloads&logo=github)](https://github.com/craftersmine/SteamGridDB.NET/releases)
 [![GitHub Project Wiki](https://img.shields.io/badge/docs-github--wiki-brightgreen)](https://github.com/craftersmine/SteamGridDB.NET/wiki)
-![Discord](https://img.shields.io/badge/discord-craftersmine%237441-5865f2)
+![Discord](https://img.shields.io/badge/discord-craftersmine%237441-5865f2?logo=discord&logoColor=white)
 ![GitHub Repo stars](https://img.shields.io/github/stars/craftersmine/SteamGridDb.Net)
 ![Maintenance](https://img.shields.io/maintenance/yes/2022)
 
