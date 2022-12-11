@@ -1,5 +1,5 @@
 # SteamGridDB.NET
-A .NET implementation of API for [SteamGridDB](https://www.steamgriddb.com) written completely in C#
+A .NET implementation of API version 2 for [SteamGridDB](https://www.steamgriddb.com) written completely in C#. SteamGridDB API v3 is planned, no ETA
 
 [![GitHub](https://img.shields.io/github/license/craftersmine/SteamGridDB.NET?color=darklime)](/LICENSE) 
 [![Nuget](https://img.shields.io/nuget/v/craftersmine.SteamGridDB.Net?logo=nuget)](https://www.nuget.org/packages/craftersmine.SteamGridDB.Net) 
