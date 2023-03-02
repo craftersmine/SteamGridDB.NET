@@ -160,6 +160,15 @@ namespace craftersmine.SteamGridDBNet.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на You are rate limited by the server! Retry after: {0}.
+        /// </summary>
+        internal static string Exception_RateLimited {
+            get {
+                return ResourceManager.GetString("Exception.RateLimited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Unauthorized request to SteamGridDB. Probably due to missing or invalid API key..
         /// </summary>
         internal static string Exception_Unauthorized {

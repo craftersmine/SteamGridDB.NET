@@ -76,6 +76,10 @@ namespace craftersmine.SteamGridDBNet.Exceptions
         /// </summary>
         Forbidden = 403,
         /// <summary>
+        /// When you are rate limited on the server
+        /// </summary>
+        RateLimited = 429,
+        /// <summary>
         /// When unknown error occurred
         /// </summary>
         Unknown = 0

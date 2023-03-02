@@ -71,6 +71,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGame> GetGameByIdAsync(int id)
         {
@@ -88,6 +89,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGame> GetGameBySteamIdAsync(int steamId)
         {
@@ -113,6 +115,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGrid[]> GetGridsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false, 
             SteamGridDbStyles styles = SteamGridDbStyles.AllGrids, SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids, 
@@ -156,6 +159,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more than one platform selected</exception>
         public async Task<SteamGridDbGrid[]> GetGridsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId,
@@ -205,6 +209,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGrid[]> GetGridsForGameAsync(SteamGridDbGame game, bool nsfw = false,
             bool humorous = false,
@@ -226,6 +231,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more then one style selected</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
@@ -279,6 +285,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more then one style selected</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
@@ -300,6 +307,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more then one style selected</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
@@ -324,6 +332,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more then one style selected</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
@@ -343,6 +352,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteGridsAsync(params int[] gridIds)
         {
@@ -360,6 +370,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteGridAsync(int gridId)
         {
@@ -385,6 +396,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbHero[]> GetHeroesByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
@@ -431,6 +443,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more than one platform selected</exception>
         public async Task<SteamGridDbHero[]> GetHeroesByPlatformGameIdAsync(SteamGridDbGamePlatform platform,
@@ -479,6 +492,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbHero[]> GetHeroesForGameAsync(SteamGridDbGame game, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
@@ -499,6 +513,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more then one style selected</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
@@ -556,6 +571,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more then one style selected</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
@@ -577,6 +593,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more then one style selected</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
@@ -599,6 +616,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more then one style selected</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
@@ -618,6 +636,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteHeroesAsync(params int[] heroIds)
         {
@@ -635,6 +654,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteHeroAsync(int heroId)
         {
@@ -659,6 +679,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbLogo[]> GetLogosByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
@@ -702,6 +723,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more than one platform selected</exception>
         public async Task<SteamGridDbLogo[]> GetLogosByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
@@ -749,6 +771,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbLogo[]> GetLogosForGameAsync(SteamGridDbGame game, bool nsfw = false,
             bool humorous = false,
@@ -769,6 +792,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
@@ -819,6 +843,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
@@ -839,6 +864,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
@@ -859,6 +885,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
@@ -877,6 +904,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteLogosAsync(params int[] logoIds)
         {
@@ -894,6 +922,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteLogoAsync(int logoId)
         {
@@ -918,6 +947,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbIcon[]> GetIconsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
             SteamGridDbStyles styles = SteamGridDbStyles.AllIcons,
@@ -961,6 +991,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more than one platform selected</exception>
         public async Task<SteamGridDbIcon[]> GetIconsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
@@ -1008,6 +1039,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbIcon[]> GetIconsForGameAsync(SteamGridDbGame game, bool nsfw = false,
             bool humorous = false,
@@ -1028,6 +1060,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
@@ -1083,6 +1116,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
@@ -1103,6 +1137,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
@@ -1123,6 +1158,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentOutOfRangeException">When stream is empty or has length of 0</exception>
         /// <exception cref="InvalidMimeTypeException">When data in stream doesn't represent correct MIME type</exception>
@@ -1141,6 +1177,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteIconsAsync(params int[] iconIds)
         {
@@ -1158,6 +1195,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteIconAsync(int iconId)
         {
@@ -1175,6 +1213,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGame[]> SearchForGamesAsync(string searchTerm)
         {
@@ -1197,6 +1236,13 @@ namespace craftersmine.SteamGridDBNet
 
             if (respObj != null)
                 errors = respObj.Errors;
+
+            if (!(response.Headers.RetryAfter is null) && response.Headers.RetryAfter.Delta.HasValue)
+            {
+                throw new SteamGridDbRateLimitedException(
+                    string.Format(Resources.Resources.Exception_RateLimited,
+                        response.Headers.RetryAfter.Delta.ToString()), response.Headers.RetryAfter.Delta.Value) {ExceptionType = ExceptionType.RateLimited, SteamGridDbErrorMessages = errors };
+            }
 
             switch (response.StatusCode)
             {
@@ -1229,6 +1275,13 @@ namespace craftersmine.SteamGridDBNet
 
             if (respObj != null)
                 errors = respObj.Errors;
+            
+            if (!(response.Headers.RetryAfter is null) && response.Headers.RetryAfter.Delta.HasValue)
+            {
+                throw new SteamGridDbRateLimitedException(
+                    string.Format(Resources.Resources.Exception_RateLimited,
+                        response.Headers.RetryAfter.Delta.ToString()), response.Headers.RetryAfter.Delta.Value) {ExceptionType = ExceptionType.RateLimited, SteamGridDbErrorMessages = errors };
+            }
 
             switch (response.StatusCode)
             {
@@ -1261,6 +1314,13 @@ namespace craftersmine.SteamGridDBNet
 
             if (respObj != null)
                 errors = respObj.Errors;
+
+            if (!(response.Headers.RetryAfter is null) && response.Headers.RetryAfter.Delta.HasValue)
+            {
+                throw new SteamGridDbRateLimitedException(
+                    string.Format(Resources.Resources.Exception_RateLimited,
+                        response.Headers.RetryAfter.Delta.ToString()), response.Headers.RetryAfter.Delta.Value) {ExceptionType = ExceptionType.RateLimited, SteamGridDbErrorMessages = errors };
+            }
 
             switch (response.StatusCode)
             {

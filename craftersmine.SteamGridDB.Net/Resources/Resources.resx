@@ -150,6 +150,9 @@
   <data name="Exception.NotFound" xml:space="preserve">
     <value>Requested grid/hero/icon/logo/game not found on SteamGridDB.</value>
   </data>
+  <data name="Exception.RateLimited" xml:space="preserve">
+    <value>You are rate limited by the server! Retry after: {0}</value>
+  </data>
   <data name="Exception.Unauthorized" xml:space="preserve">
     <value>Unauthorized request to SteamGridDB. Probably due to missing or invalid API key.</value>
   </data>
