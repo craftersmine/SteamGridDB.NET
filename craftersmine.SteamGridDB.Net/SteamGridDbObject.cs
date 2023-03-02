@@ -108,6 +108,7 @@ namespace craftersmine.SteamGridDBNet
         /// <returns></returns>
         /// <exception cref="SteamGridDbException">When unknown exception occurred</exception>
         /// <exception cref="SteamGridDbImageException">When error occurred while downloading image</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="ArgumentNullException">When image URL is null</exception>
         public async Task<Stream> GetImageAsStreamAsync(bool thumbnail)
         {
@@ -131,6 +132,13 @@ namespace craftersmine.SteamGridDBNet
                     if (respObj is null)
                         throw new SteamGridDbImageException(ExceptionType.Unknown,
                             Resources.Resources.Exception_UnknownImageException);
+                    
+                    if (!(resp.Headers.RetryAfter is null) && resp.Headers.RetryAfter.Delta.HasValue)
+                    {
+                        throw new SteamGridDbRateLimitedException(
+                            string.Format(Resources.Resources.Exception_RateLimited,
+                                resp.Headers.RetryAfter.Delta.ToString()), resp.Headers.RetryAfter.Delta.Value) {ExceptionType = ExceptionType.RateLimited };
+                    }
 
                     switch (resp.StatusCode)
                     {
@@ -162,6 +170,9 @@ namespace craftersmine.SteamGridDBNet
         /// Downloads full image to specified file
         /// </summary>
         /// <param name="filePath">Full path of file to download</param>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred</exception>
+        /// <exception cref="SteamGridDbImageException">When error occurred while downloading image</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="UnauthorizedAccessException">When access to file is forbidden</exception>
         /// <exception cref="ArgumentException">When path is empty, null, has only whitespaces or has invalid characters</exception>
         /// <exception cref="ArgumentNullException">When path is empty, null or has only whitespaces</exception>
@@ -181,6 +192,9 @@ namespace craftersmine.SteamGridDBNet
         /// Downloads thumbnail image to specified file
         /// </summary>
         /// <param name="filePath">Full path of file to download</param>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred</exception>
+        /// <exception cref="SteamGridDbImageException">When error occurred while downloading image</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="UnauthorizedAccessException">When access to file is forbidden</exception>
         /// <exception cref="ArgumentException">When path is empty, null, has only whitespaces or has invalid characters</exception>
         /// <exception cref="ArgumentNullException">When path is empty, null or has only whitespaces</exception>
@@ -204,6 +218,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
         /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<bool> DeleteFromServerAsync()
         {
