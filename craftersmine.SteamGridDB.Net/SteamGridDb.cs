@@ -697,7 +697,7 @@ namespace craftersmine.SteamGridDBNet
         /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllHeroes"/></param>
         /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
         /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <returns><see cref="SteamGridDbLogo"/> array of results</returns>
         /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
         /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
