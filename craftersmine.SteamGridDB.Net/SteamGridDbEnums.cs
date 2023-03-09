@@ -272,4 +272,28 @@ namespace craftersmine.SteamGridDBNet
         D1024 = 131072,
         All = D8 | D16 | D24 | D32 | D48 | D64 | D72 | D96 | D128 | D192 | D256 | D512 | D768 | D1024
     }
+
+    /// <summary>
+    /// Contains types of tags for objects
+    /// </summary>
+    [Flags]
+    public enum SteamGridDbTags
+    {
+        /// <summary>
+        /// No tags provided
+        /// </summary>
+        None,
+        /// <summary>
+        /// Contains humorous content tag
+        /// </summary>
+        Humor,
+        /// <summary>
+        /// Contains NSFW content tag
+        /// </summary>
+        Nsfw,
+        /// <summary>
+        /// Contains epilepsy tag
+        /// </summary>
+        Epilepsy
+    }
 }
