@@ -158,6 +158,25 @@ namespace craftersmine.SteamGridDBNet
             }
         }
 
+        public static class Tags
+        {
+            public const string Humor = "humor";
+            public const string Nsfw = "nsfw";
+            public const string Epilepsy = "epilepsy";
+
+            public static string GetFromFlags(SteamGridDbTags tags)
+            {
+                List<string> tagsL = new List<string>();
+                if (tags.HasFlag(SteamGridDbTags.Humor))
+                    tagsL.Add("humor");
+                if (tags.HasFlag(SteamGridDbTags.Nsfw))
+                    tagsL.Add("nsfw");
+                if (tags.HasFlag(SteamGridDbTags.Epilepsy))
+                    tagsL.Add("epilepsy");
+                return string.Join(",", tagsL);
+            }
+        }
+
         public static class IconDimensions
         {
             public const string D8 = "8x8";
