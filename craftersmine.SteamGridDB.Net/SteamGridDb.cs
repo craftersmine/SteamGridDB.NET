@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -106,6 +106,7 @@ namespace craftersmine.SteamGridDBNet
         /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
         /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
         /// <param name="epilepsy">Include content that can cause epilepsy</param>
+        /// <param name="page">Page index to request data</param>
         /// <param name="tags">Bitmask for tags filter.</param>
         /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllGrids"/></param>
         /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllGrids"/></param>
@@ -119,7 +120,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGrid[]> GetGridsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
-            bool epilepsy = false, SteamGridDbTags tags = SteamGridDbTags.None,
+            bool epilepsy = false, int page = 0, SteamGridDbTags tags = SteamGridDbTags.None,
             SteamGridDbStyles styles = SteamGridDbStyles.AllGrids,
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids,
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
@@ -139,7 +140,7 @@ namespace craftersmine.SteamGridDBNet
                 tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
-            var response = await Get($"grids/game/{gameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}{tagsParam}");
+            var response = await Get($"grids/game/{gameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
             if (response.Data != null)
             {
                 var objects = response.Data.ToObject<SteamGridDbGrid[]>();
@@ -174,7 +175,7 @@ namespace craftersmine.SteamGridDBNet
             SteamGridDbStyles styles = SteamGridDbStyles.AllGrids, SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids, 
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
-            return await GetGridsByGameIdAsync(gameId, nsfw, humorous, false, SteamGridDbTags.None, styles, dimensions,
+            return await GetGridsByGameIdAsync(gameId, nsfw, humorous, false, 0, SteamGridDbTags.None, styles, dimensions,
                 formats, types);
         }
         
@@ -186,6 +187,7 @@ namespace craftersmine.SteamGridDBNet
         /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
         /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
         /// <param name="epilepsy">Include content that can cause epilepsy</param>
+        /// <param name="page">Page index to request data</param>
         /// <param name="tags">Bitmask for tags filter.</param>
         /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllGrids"/></param>
         /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllGrids"/></param>
@@ -200,7 +202,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         /// <exception cref="ArgumentException">When more than one platform selected</exception>
         public async Task<SteamGridDbGrid[]> GetGridsByPlatformGameIdAsync(SteamGridDbGamePlatform platform,
-            int platformGameId, bool nsfw = false, bool humorous = false, bool epilepsy = false,
+            int platformGameId, bool nsfw = false, bool humorous = false, bool epilepsy = false, int page = 0,
             SteamGridDbTags tags = SteamGridDbTags.None, SteamGridDbStyles styles = SteamGridDbStyles.AllGrids,
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids,
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
@@ -225,7 +227,7 @@ namespace craftersmine.SteamGridDBNet
                 tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
-            var response = await Get($"grids/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}{tagsParam}");
+            var response = await Get($"grids/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
             if (response.Data != null)
             {
                 var objects = response.Data.ToObject<SteamGridDbGrid[]>();
@@ -264,7 +266,7 @@ namespace craftersmine.SteamGridDBNet
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
             return await GetGridsByPlatformGameIdAsync(platform, platformGameId, nsfw, humorous, false,
-                SteamGridDbTags.None, styles, dimensions, formats, types);
+                0, SteamGridDbTags.None, styles, dimensions, formats, types);
         }
 
         /// <summary>
