@@ -565,7 +565,7 @@ namespace craftersmine.SteamGridDBNet
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
-            return await GetHeroesByGameIdAsync(gameId, nsfw, humorous, false, SteamGridDbTags.None, styles, dimensions,
+            return await GetHeroesByGameIdAsync(gameId, nsfw, humorous, false, 0, SteamGridDbTags.None, styles, dimensions,
                 formats, types);
         }
 
