@@ -155,31 +155,6 @@ namespace craftersmine.SteamGridDBNet
         }
 
         /// <summary>
-        /// Gets <see cref="SteamGridDbGrid"/> array for specified game with specified filters
-        /// </summary>
-        /// <param name="gameId">SteamGridDB game ID of game</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllGrids"/></param>
-        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllGrids"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbGrid[]> GetGridsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false, 
-            SteamGridDbStyles styles = SteamGridDbStyles.AllGrids, SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids, 
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetGridsByGameIdAsync(gameId, nsfw, humorous, false, 0, SteamGridDbTags.None, styles, dimensions,
-                formats, types);
-        }
-        
-        /// <summary>
         /// Gets <see cref="SteamGridDbGrid"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
         /// </summary>
         /// <param name="platform">Platform of which items get</param>
@@ -242,34 +217,6 @@ namespace craftersmine.SteamGridDBNet
         }
 
         /// <summary>
-        /// Gets <see cref="SteamGridDbGrid"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
-        /// </summary>
-        /// <param name="platform">Platform of which items get</param>
-        /// <param name="platformGameId">Platform specific game ID of game</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllGrids"/></param>
-        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllGrids"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        /// <exception cref="ArgumentException">When more than one platform selected</exception>
-        public async Task<SteamGridDbGrid[]> GetGridsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId,
-            bool nsfw = false, bool humorous = false, SteamGridDbStyles styles = SteamGridDbStyles.AllGrids,
-            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids,
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetGridsByPlatformGameIdAsync(platform, platformGameId, nsfw, humorous, false,
-                0, SteamGridDbTags.None, styles, dimensions, formats, types);
-        }
-
-        /// <summary>
         /// Gets <see cref="SteamGridDbGrid"/> array for specified game with specified filters
         /// </summary>
         /// <param name="game"><see cref="SteamGridDbGame"/> object for game data</param>
@@ -297,32 +244,6 @@ namespace craftersmine.SteamGridDBNet
         {
             return await GetGridsByGameIdAsync(game.Id, nsfw, humorous, epilepsy, page, tags, styles, dimensions,
                 formats, types);
-        }
-
-        /// <summary>
-        /// Gets <see cref="SteamGridDbGrid"/> array for specified game with specified filters
-        /// </summary>
-        /// <param name="game"><see cref="SteamGridDbGame"/> object for game data</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllGrids"/></param>
-        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllGrids"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbGrid[]> GetGridsForGameAsync(SteamGridDbGame game, bool nsfw = false,
-            bool humorous = false,
-            SteamGridDbStyles styles = SteamGridDbStyles.AllGrids,
-            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllGrids,
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetGridsByGameIdAsync(game.Id, nsfw, humorous, styles, dimensions, formats, types);
         }
 
         /// <summary>
@@ -544,32 +465,6 @@ namespace craftersmine.SteamGridDBNet
         }
 
         /// <summary>
-        /// Gets <see cref="SteamGridDbHero"/> array for specified game with specified filters
-        /// </summary>
-        /// <param name="gameId">SteamGridDB game ID of game</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllHeroes"/></param>
-        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllHeroes"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbHero[]> GetHeroesByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
-            SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
-            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetHeroesByGameIdAsync(gameId, nsfw, humorous, false, 0, SteamGridDbTags.None, styles, dimensions,
-                formats, types);
-        }
-
-        /// <summary>
         /// Gets <see cref="SteamGridDbHero"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
         /// </summary>
         /// <param name="platform">Platform of which items get</param>
@@ -630,35 +525,6 @@ namespace craftersmine.SteamGridDBNet
         }
 
         /// <summary>
-        /// Gets <see cref="SteamGridDbHero"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
-        /// </summary>
-        /// <param name="platform">Platform of which items get</param>
-        /// <param name="platformGameId">Platform specific game ID of game</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllHeroes"/></param>
-        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllHeroes"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        /// <exception cref="ArgumentException">When more than one platform selected</exception>
-        public async Task<SteamGridDbHero[]> GetHeroesByPlatformGameIdAsync(SteamGridDbGamePlatform platform,
-            int platformGameId,
-            bool nsfw = false, bool humorous = false, SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
-            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetHeroesByPlatformGameIdAsync(platform, platformGameId, nsfw, humorous, false, 0,
-                SteamGridDbTags.None, styles, dimensions, formats, types);
-        }
-
-        /// <summary>
         /// Gets <see cref="SteamGridDbHero"/> array for specified game with specified filters
         /// </summary>
         /// <param name="game"><see cref="SteamGridDbGame"/> object for game data</param>
@@ -686,30 +552,6 @@ namespace craftersmine.SteamGridDBNet
         {
             return await GetHeroesByGameIdAsync(game.Id, nsfw, humorous, epilepsy, page, tags, styles, dimensions,
                 formats, types);
-        }
-        /// <summary>
-        /// Gets <see cref="SteamGridDbHero"/> array for specified game with specified filters
-        /// </summary>
-        /// <param name="game"><see cref="SteamGridDbGame"/> object for game data</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllHeroes"/></param>
-        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllHeroes"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbLogo"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbHero[]> GetHeroesForGameAsync(SteamGridDbGame game, bool nsfw = false, bool humorous = false,
-            SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
-            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetHeroesByGameIdAsync(game.Id, nsfw, humorous, styles, dimensions, formats, types);
         }
 
         /// <summary>
@@ -930,30 +772,6 @@ namespace craftersmine.SteamGridDBNet
         }
 
         /// <summary>
-        /// Gets <see cref="SteamGridDbLogo"/> array for specified game with specified filters
-        /// </summary>
-        /// <param name="gameId">SteamGridDB game ID of game</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllLogos"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbLogo[]> GetLogosByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
-            SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
-            SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetLogosByGameIdAsync(gameId, nsfw, humorous, false, 0, SteamGridDbTags.None, styles, formats,
-                types);
-        }
-
-        /// <summary>
         /// Gets <see cref="SteamGridDbLogo"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
         /// </summary>
         /// <param name="platform">Platform of which items get</param>
@@ -1013,32 +831,6 @@ namespace craftersmine.SteamGridDBNet
         }
 
         /// <summary>
-        /// Gets <see cref="SteamGridDbLogo"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
-        /// </summary>
-        /// <param name="platform">Platform of which items get</param>
-        /// <param name="platformGameId">Platform specific game ID of game</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllLogos"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        /// <exception cref="ArgumentException">When more than one platform selected</exception>
-        public async Task<SteamGridDbLogo[]> GetLogosByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
-            SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
-            SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetLogosByPlatformGameIdAsync(platform, platformGameId, nsfw, humorous, false, 0,
-                SteamGridDbTags.None, styles, formats, types);
-        }
-
-        /// <summary>
         /// Gets <see cref="SteamGridDbLogo"/> array for specified game with specified filters
         /// </summary>
         /// <param name="game"><see cref="SteamGridDbGame"/> object for game data</param>
@@ -1064,30 +856,6 @@ namespace craftersmine.SteamGridDBNet
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
             return await GetLogosByGameIdAsync(game.Id, nsfw, humorous, epilepsy, page, tags, styles, formats, types);
-        }
-
-        /// <summary>
-        /// Gets <see cref="SteamGridDbLogo"/> array for specified game with specified filters
-        /// </summary>
-        /// <param name="game"><see cref="SteamGridDbGame"/> object for game data</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllLogos"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbLogo[]> GetLogosForGameAsync(SteamGridDbGame game, bool nsfw = false,
-            bool humorous = false,
-            SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
-            SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetLogosByGameIdAsync(game.Id, nsfw, humorous, styles, formats, types);
         }
 
         /// <summary>
@@ -1297,30 +1065,6 @@ namespace craftersmine.SteamGridDBNet
         }
 
         /// <summary>
-        /// Gets <see cref="SteamGridDbIcon"/> array for specified game with specified filters
-        /// </summary>
-        /// <param name="gameId">SteamGridDB game ID of game</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllIcons"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.AllIcons"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbIcon[]> GetIconsByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
-            SteamGridDbStyles styles = SteamGridDbStyles.AllIcons,
-            SteamGridDbFormats formats = SteamGridDbFormats.AllIcons, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetIconsByGameIdAsync(gameId, nsfw, humorous, false, 0, SteamGridDbTags.None, styles, formats,
-                types);
-        }
-
-        /// <summary>
         /// Gets <see cref="SteamGridDbIcon"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
         /// </summary>
         /// <param name="platform">Platform of which items get</param>
@@ -1381,32 +1125,6 @@ namespace craftersmine.SteamGridDBNet
         }
 
         /// <summary>
-        /// Gets <see cref="SteamGridDbIcon"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
-        /// </summary>
-        /// <param name="platform">Platform of which items get</param>
-        /// <param name="platformGameId">Platform specific game ID of game</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllIcons"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.AllIcons"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        /// <exception cref="ArgumentException">When more than one platform selected</exception>
-        public async Task<SteamGridDbIcon[]> GetIconsByPlatformGameIdAsync(SteamGridDbGamePlatform platform, int platformGameId, bool nsfw = false, bool humorous = false,
-            SteamGridDbStyles styles = SteamGridDbStyles.AllIcons,
-            SteamGridDbFormats formats = SteamGridDbFormats.AllIcons, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetIconsByPlatformGameIdAsync(platform, platformGameId, nsfw, humorous, false, 0,
-                SteamGridDbTags.None, styles, formats, types);
-        }
-        
-        /// <summary>
         /// Gets <see cref="SteamGridDbIcon"/> array for specified game with specified filters
         /// </summary>
         /// <param name="game"><see cref="SteamGridDbGame"/> object for game data</param>
@@ -1431,30 +1149,6 @@ namespace craftersmine.SteamGridDBNet
             SteamGridDbFormats formats = SteamGridDbFormats.AllIcons, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
             return await GetIconsByGameIdAsync(game.Id, nsfw, humorous, epilepsy, page, tags, styles, formats, types);
-        }
-
-        /// <summary>
-        /// Gets <see cref="SteamGridDbIcon"/> array for specified game with specified filters
-        /// </summary>
-        /// <param name="game"><see cref="SteamGridDbGame"/> object for game data</param>
-        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
-        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
-        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllIcons"/></param>
-        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.AllIcons"/></param>
-        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
-        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
-        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
-        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
-        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
-        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
-        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
-        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
-        public async Task<SteamGridDbIcon[]> GetIconsForGameAsync(SteamGridDbGame game, bool nsfw = false,
-            bool humorous = false,
-            SteamGridDbStyles styles = SteamGridDbStyles.AllIcons,
-            SteamGridDbFormats formats = SteamGridDbFormats.AllIcons, SteamGridDbTypes types = SteamGridDbTypes.All)
-        {
-            return await GetIconsByGameIdAsync(game.Id, nsfw, humorous, styles, formats, types);
         }
 
         /// <summary>
