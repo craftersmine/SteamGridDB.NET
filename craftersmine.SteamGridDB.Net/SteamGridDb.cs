@@ -137,7 +137,7 @@ namespace craftersmine.SteamGridDBNet
             string tagsParam = "";
             if (tags != SteamGridDbTags.None)
             {
-                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+                tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
             var response = await Get($"grids/game/{gameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
@@ -199,7 +199,7 @@ namespace craftersmine.SteamGridDBNet
             string tagsParam = "";
             if (tags != SteamGridDbTags.None)
             {
-                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+                tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
             var response = await Get($"grids/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
@@ -445,7 +445,7 @@ namespace craftersmine.SteamGridDBNet
             string tagsParam = "";
             if (tags != SteamGridDbTags.None)
             {
-                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+                tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
             var response =
@@ -507,7 +507,7 @@ namespace craftersmine.SteamGridDBNet
             string tagsParam = "";
             if (tags != SteamGridDbTags.None)
             {
-                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+                tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
             var response = await Get($"heroes/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
@@ -754,7 +754,7 @@ namespace craftersmine.SteamGridDBNet
             string tagsParam = "";
             if (tags != SteamGridDbTags.None)
             {
-                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+                tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
             var response = await Get($"logos/game/{gameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
@@ -813,7 +813,7 @@ namespace craftersmine.SteamGridDBNet
             string tagsParam = "";
             if (tags != SteamGridDbTags.None)
             {
-                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+                tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
             var response = await Get($"logos/{platforms}/{platformGameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
@@ -1047,7 +1047,7 @@ namespace craftersmine.SteamGridDBNet
             string tagsParam = "";
             if (tags != SteamGridDbTags.None)
             {
-                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+                tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
             var response = await Get($"icons/game/{gameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
@@ -1107,7 +1107,7 @@ namespace craftersmine.SteamGridDBNet
             string tagsParam = "";
             if (tags != SteamGridDbTags.None)
             {
-                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+                tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
             var response = await Get($"icons/{platforms}/{platformGameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
