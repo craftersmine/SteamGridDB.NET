@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -462,6 +462,63 @@ namespace craftersmine.SteamGridDBNet
         /// <param name="gameId">SteamGridDB game ID of game</param>
         /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
         /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="epilepsy">Include content that can cause epilepsy</param>
+        /// <param name="page">Page index to request data</param>
+        /// <param name="tags">Bitmask for tags filter.</param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllHeroes"/></param>
+        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllHeroes"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        public async Task<SteamGridDbHero[]> GetHeroesByGameIdAsync(int gameId, bool nsfw = false,
+            bool humorous = false, bool epilepsy = false, int page = 0, SteamGridDbTags tags = SteamGridDbTags.None,
+            SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
+            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
+        {
+            if (styles.HasFlag(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
+                styles &= ~(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
+            if (dimensions.HasFlag(SteamGridDbDimensions.AllGrids))
+                dimensions &= ~(SteamGridDbDimensions.AllGrids);
+            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
+            var dimensionsFilter = SteamGridDbConstants.Dimensions.GetFromFlags(dimensions);
+            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
+            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
+
+            string tagsParam = "";
+            if (tags != SteamGridDbTags.None)
+            {
+                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+            }
+
+            var response =
+                await Get(
+                    $"heroes/game/{gameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
+            if (response.Data != null)
+            {
+                var objects = response.Data.ToObject<SteamGridDbHero[]>();
+                foreach (var obj in objects)
+                {
+                    obj.ApiInstance = this;
+                }
+
+                return objects;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets <see cref="SteamGridDbHero"/> array for specified game with specified filters
+        /// </summary>
+        /// <param name="gameId">SteamGridDB game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
         /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllHeroes"/></param>
         /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllHeroes"/></param>
         /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
@@ -478,17 +535,57 @@ namespace craftersmine.SteamGridDBNet
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
+            return await GetHeroesByGameIdAsync(gameId, nsfw, humorous, false, SteamGridDbTags.None, styles, dimensions,
+                formats, types);
+        }
+
+        /// <summary>
+        /// Gets <see cref="SteamGridDbHero"/> array for specified game by selected platform and platform specific Game ID (like Steam App ID) with specified filters
+        /// </summary>
+        /// <param name="platform">Platform of which items get</param>
+        /// <param name="platformGameId">Platform specific game ID of game</param>
+        /// <param name="nsfw">Include Non-Suitable-For-Work results, default <see langword="false"/></param>
+        /// <param name="humorous">Include humorous results, default <see langword="false"/></param>
+        /// <param name="epilepsy">Include content that can cause epilepsy</param>
+        /// <param name="page">Page index to request data</param>
+        /// <param name="tags">Bitmask for tags filter.</param>
+        /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllHeroes"/></param>
+        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllHeroes"/></param>
+        /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
+        /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
+        /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
+        /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
+        /// <exception cref="SteamGridDbBadRequestException">When library makes invalid request to server due to invalid URI generated</exception>
+        /// <exception cref="SteamGridDbForbiddenException">When you don't have permissions to perform action on item, probably because you don't own item</exception>
+        /// <exception cref="SteamGridDbRateLimitedException">When you've been rate limited by the server</exception>
+        /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
+        /// <exception cref="ArgumentException">When more than one platform selected</exception>
+        public async Task<SteamGridDbHero[]> GetHeroesByPlatformGameIdAsync(SteamGridDbGamePlatform platform,
+            int platformGameId, bool nsfw = false, bool humorous = false, bool epilepsy = false, int page = 0,
+            SteamGridDbTags tags = SteamGridDbTags.None, SteamGridDbStyles styles = SteamGridDbStyles.AllHeroes,
+            SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
+        {
             if (styles.HasFlag(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
                 styles &= ~(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
             if (dimensions.HasFlag(SteamGridDbDimensions.AllGrids))
                 dimensions &= ~(SteamGridDbDimensions.AllGrids);
+            if (platform.MoreThanOneFlag())
+                throw new ArgumentException(Resources.Resources.Exception_MoreThanOnePlatformSelected, nameof(platform));
+            var platforms = SteamGridDbConstants.Platforms.GetFromFlags(platform);
             var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
             var dimensionsFilter = SteamGridDbConstants.Dimensions.GetFromFlags(dimensions);
             var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
             var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
-            var response =
-                await Get(
-                    $"heroes/game/{gameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
+
+            string tagsParam = "";
+            if (tags != SteamGridDbTags.None)
+            {
+                tagsParam = "&tags=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
+            }
+
+            var response = await Get($"heroes/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
             if (response.Data != null)
             {
                 var objects = response.Data.ToObject<SteamGridDbHero[]>();
@@ -527,29 +624,8 @@ namespace craftersmine.SteamGridDBNet
             SteamGridDbDimensions dimensions = SteamGridDbDimensions.AllHeroes,
             SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
         {
-            if (styles.HasFlag(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos))
-                styles &= ~(SteamGridDbStyles.AllIcons | SteamGridDbStyles.AllLogos);
-            if (dimensions.HasFlag(SteamGridDbDimensions.AllGrids))
-                dimensions &= ~(SteamGridDbDimensions.AllGrids);
-            if (platform.MoreThanOneFlag())
-                throw new ArgumentException(Resources.Resources.Exception_MoreThanOnePlatformSelected, nameof(platform));
-            var platforms = SteamGridDbConstants.Platforms.GetFromFlags(platform);
-            var stylesFilter = SteamGridDbConstants.Styles.GetFromFlags(styles);
-            var dimensionsFilter = SteamGridDbConstants.Dimensions.GetFromFlags(dimensions);
-            var formatsFilter = SteamGridDbConstants.Mimes.GetFromFlags(formats);
-            var typesFilter = SteamGridDbConstants.Types.GetFromFlags(types);
-            var response = await Get($"heroes/{platforms}/{platformGameId}?styles={stylesFilter}&dimensions={dimensionsFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}");
-            if (response.Data != null)
-            {
-                var objects = response.Data.ToObject<SteamGridDbHero[]>();
-                foreach (var obj in objects)
-                {
-                    obj.ApiInstance = this;
-                }
-
-                return objects;
-            }
-            return null;
+            return await GetHeroesByPlatformGameIdAsync(platform, platformGameId, nsfw, humorous, false, 0,
+                SteamGridDbTags.None, styles, dimensions, formats, types);
         }
 
         /// <summary>
