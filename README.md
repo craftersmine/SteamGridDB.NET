@@ -8,7 +8,7 @@ A .NET implementation of API version 2 for [SteamGridDB](https://www.steamgriddb
 [![GitHub Project Wiki](https://img.shields.io/badge/docs-github--wiki-brightgreen)](https://github.com/craftersmine/SteamGridDB.NET/wiki)
 ![Discord](https://img.shields.io/badge/discord-craftersmine-5865f2?logo=discord&logoColor=white)
 ![GitHub Repo stars](https://img.shields.io/github/stars/craftersmine/SteamGridDb.Net)
-![Maintenance](https://img.shields.io/maintenance/yes/2023)
+![Maintenance](https://img.shields.io/maintenance/yes/2025)
 
 ![Repository Preview](https://raw.githubusercontent.com/craftersmine/SteamGridDB.NET/master/.github/RepositoryPreview.png)
 
