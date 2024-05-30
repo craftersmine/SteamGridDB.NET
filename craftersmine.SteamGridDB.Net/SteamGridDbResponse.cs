@@ -23,5 +23,20 @@ namespace craftersmine.SteamGridDBNet
         /// </summary>
         [JsonProperty("errors")]
         public string[] Errors { get; private set; }
+        /// <summary>
+        /// Gets a total amount of objects that SteamGridDB has
+        /// </summary>
+        [JsonProperty("total")]
+        public int Total { get; private set; }
+        /// <summary>
+        /// Gets a limited amount set to request objects from SteamGridDB
+        /// </summary>
+        [JsonProperty("limit")]
+        public int Limit { get; private set; }
+        /// <summary>
+        /// Gets current page of objects requested
+        /// </summary>
+        [JsonProperty("page")]
+        public int Page { get; private set; }
     }
 }
