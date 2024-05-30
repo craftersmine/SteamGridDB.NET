@@ -741,6 +741,7 @@ namespace craftersmine.SteamGridDBNet
         /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllLogos"/></param>
         /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
         /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <param name="limit">Specifies how many objects request from the SteamGridDB</param>
         /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
         /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
@@ -751,7 +752,8 @@ namespace craftersmine.SteamGridDBNet
         public async Task<SteamGridDbLogo[]> GetLogosByGameIdAsync(int gameId, bool nsfw = false, bool humorous = false,
             bool epilepsy = false, int page = 0, SteamGridDbTags tags = SteamGridDbTags.None,
             SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
-            SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All)
+            SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All,
+            int limit = 50)
         {
             if (styles.HasFlag(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllGrids))
                 styles &= ~(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllGrids);
@@ -769,7 +771,7 @@ namespace craftersmine.SteamGridDBNet
                 tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
-            var response = await Get($"logos/game/{gameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
+            var response = await Get($"logos/game/{gameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&limit={limit}&page={page}{tagsParam}");
             if (response.Data != null)
             {
                 var objects = response.Data.ToObject<SteamGridDbLogo[]>();
@@ -795,6 +797,7 @@ namespace craftersmine.SteamGridDBNet
         /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllLogos"/></param>
         /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
         /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <param name="limit">Specifies how many objects request from the SteamGridDB</param>
         /// <returns><see cref="SteamGridDbGrid"/> array of results</returns>
         /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
@@ -806,7 +809,8 @@ namespace craftersmine.SteamGridDBNet
         public async Task<SteamGridDbLogo[]> GetLogosByPlatformGameIdAsync(SteamGridDbGamePlatform platform,
             int platformGameId, bool nsfw = false, bool humorous = false, bool epilepsy = false, int page = 0,
             SteamGridDbTags tags = SteamGridDbTags.None, SteamGridDbStyles styles = SteamGridDbStyles.AllLogos,
-            SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All)
+            SteamGridDbFormats formats = SteamGridDbFormats.AllLogos, SteamGridDbTypes types = SteamGridDbTypes.All,
+            int limit = 50)
         {
             if (styles.HasFlag(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllGrids))
                 styles &= ~(SteamGridDbStyles.AllHeroes | SteamGridDbStyles.AllGrids);
@@ -828,7 +832,7 @@ namespace craftersmine.SteamGridDBNet
                 tagsParam = "&oneoftag=" + SteamGridDbConstants.Tags.GetFromFlags(tags);
             }
 
-            var response = await Get($"logos/{platforms}/{platformGameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&page={page}{tagsParam}");
+            var response = await Get($"logos/{platforms}/{platformGameId}?styles={stylesFilter}&mimes={formatsFilter}&types={typesFilter}&nsfw={nsfw.ToString().ToLower()}&humor={humorous.ToString().ToLower()}&epilepsy={epilepsy.ToString().ToLower()}&limit={limit}&page={page}{tagsParam}");
             if (response.Data != null)
             {
                 var objects = response.Data.ToObject<SteamGridDbLogo[]>();
@@ -852,9 +856,9 @@ namespace craftersmine.SteamGridDBNet
         /// <param name="page">Page index to request data</param>
         /// <param name="tags">Bitmask for tags filter.</param>
         /// <param name="styles">Bitmask for styles filter. Allowed values see in <see cref="SteamGridDbStyles.AllGrids"/></param>
-        /// <param name="dimensions">Bitmask for dimensions filter. Allowed values see in <see cref="SteamGridDbDimensions.AllGrids"/></param>
         /// <param name="formats">Bitmask for formats/mimes filter. Allowed values see in <see cref="SteamGridDbFormats.All"/></param>
         /// <param name="types">Bitmask for type of image, animated or static. <see cref="SteamGridDbTypes.All"/></param>
+        /// <param name="limit">Specifies how many objects request from the SteamGridDB</param>
         /// <returns><see cref="SteamGridDbLogo"/> array of results</returns>
         /// <exception cref="SteamGridDbNotFoundException">When item is not found on server</exception>
         /// <exception cref="SteamGridDbUnauthorizedException">When your API key is invalid, not set, or you've reset it on API preferences page and use old one</exception>
@@ -865,9 +869,10 @@ namespace craftersmine.SteamGridDBNet
         public async Task<SteamGridDbLogo[]> GetLogosForGameAsync(SteamGridDbGame game, bool nsfw = false,
             bool humorous = false, bool epilepsy = false, int page = 0, SteamGridDbTags tags = SteamGridDbTags.None,
             SteamGridDbStyles styles = SteamGridDbStyles.AllGrids,
-            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All)
+            SteamGridDbFormats formats = SteamGridDbFormats.All, SteamGridDbTypes types = SteamGridDbTypes.All,
+            int limit = 50)
         {
-            return await GetLogosByGameIdAsync(game.Id, nsfw, humorous, epilepsy, page, tags, styles, formats, types);
+            return await GetLogosByGameIdAsync(game.Id, nsfw, humorous, epilepsy, page, tags, styles, formats, types, limit);
         }
 
         /// <summary>
