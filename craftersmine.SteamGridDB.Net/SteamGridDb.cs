@@ -1342,6 +1342,7 @@ namespace craftersmine.SteamGridDBNet
         /// <exception cref="SteamGridDbException">When unknown exception occurred in request</exception>
         public async Task<SteamGridDbGame[]> SearchForGamesAsync(string searchTerm)
         {
+            searchTerm = Uri.EscapeDataString(Uri.EscapeDataString(searchTerm));
             var response = await Get($"search/autocomplete/{searchTerm}");
             if (response.Data != null) return response.Data.ToObject<SteamGridDbGame[]>();
             return null;
